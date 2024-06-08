@@ -2,6 +2,14 @@
 GET http://localhost:3000/A1_and_A2_112_year/id/6663cb7d525073746a7a5aa3
 Content-Type: application/json
 
-### 聚合查詢特定區域的資料
-GET http://localhost:3000/A1_and_A2_112_year/region/03中山區
+### 聚合查詢特定區域的資料_聚合練習1
+GET http://localhost:3000/A1_and_A2_112_year/aggregate_1
+Content-Type: application/json
+
+### 聚合查詢特定區域的資料_聚合練習2
+GET http://localhost:3000/A1_and_A2_112_year/aggregate_2
+Content-Type: application/json
+
+### 聚合查詢特定區域的資料_聚合練習2
+GET http://localhost:3000/A1_and_A2_112_year/aggregate_3
 Content-Type: application/json

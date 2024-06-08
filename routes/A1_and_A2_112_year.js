@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const A1A2_aggregate_1 = require('../models/A1_and_A2_112_year_aggregate_1'); // 引入模型
+const A1A2_aggregate_2 = require('../models/A1_and_A2_112_year_aggregate_2'); // 引入模型
 const A1A2_detailed = require('../models/A1_and_A2_112_year_detailed'); // 引入模型
 
 // 查詢特定ID的資料
@@ -71,13 +72,10 @@ router.get("/id/:id", async (req, res) => {
     }
 });
 
-// 聚合查詢特定區域的資料
-router.get("/region/:region", async (req, res) => {
-    const region = req.params.region;
-    console.log(`Received request for region: ${region}`); // 日誌輸出
+// 聚合查詢特定區域的資料_聚合練習1
+router.get("/aggregate_1", async (req, res) => {
     try {
         const result = await A1A2_aggregate_1.aggregate([
-            { $match: { 區序: region } }, // 匹配指定區序
             {
                 $group: {
                     _id: "$區序",
@@ -85,16 +83,74 @@ router.get("/region/:region", async (req, res) => {
                     '2-30日死亡人數': { $sum: "$2-30日死亡人數" },
                     受傷人數: { $sum: "$受傷人數" }
                 }
+            },
+            {
+                $sort:{
+                    "_id":1
+                }
             }
         ]);
         if (result.length === 0) {
-            return res.status(404).json({ message: 'No data found for the specified region' });
+            return res.status(404).json({ message: 'No data found' });
         }
         const formattedResult = result.map(item => ({
             "_id": item._id,
             "死亡人數": item.死亡人數,
             "2-30日死亡人數": item['2-30日死亡人數'],
             "受傷人數": item.受傷人數
+        }));
+        res.json(formattedResult);
+    } catch (err) {
+        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 聚合查詢特定區域的資料_聚合練習2
+router.get("/aggregate_2", async (req, res) => {
+    try {
+        const result = await A1A2_aggregate_2.aggregate([
+            {
+                $group: 
+                {
+                    _id:
+                    {
+                        月份:"$發生月",
+                        地區:"$區序"
+                    },
+                    受傷人數: { $sum: "$受傷人數" },
+                    總死亡人數: 
+                    { 
+                        $sum: 
+                        {
+                            $add: 
+                            [
+                                "$死亡人數",
+                                "$2-30日死亡人數"
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $sort:
+                {
+                    "_id.月份":1,
+                    "_id.地區":1
+                }
+            }
+        ]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+        const formattedResult = result.map(item => ({
+            "_id": 
+            {
+                "月份":item._id.月份,
+                "地區":item._id.地區
+            },
+            "受傷人數": item.受傷人數,
+            "總死亡人數": item.總死亡人數
         }));
         res.json(formattedResult);
     } catch (err) {
