@@ -10,6 +10,10 @@ const A1A2_aggregate_3 = require('../models/A1_and_A2_112_year_aggregate_3'); //
 const A1A2_sideproject_1 = require('../models/A1_and_A2_112_year_sideproject_1'); // 引入模型
 const A1A2_sideproject_2 = require('../models/A1_and_A2_112_year_sideproject_2'); // 引入模型
 const A1A2_sideproject_3 = require('../models/A1_and_A2_112_year_sideproject_3'); // 引入模型
+const A1A2_sideproject_4 = require('../models/A1_and_A2_112_year_sideproject_4'); // 引入模型
+const A1A2_sideproject_5 = require('../models/A1_and_A2_112_year_sideproject_5'); // 引入模型
+const A1A2_sideproject_6 = require('../models/A1_and_A2_112_year_sideproject_6'); // 引入模型
+const A1A2_sideproject_7 = require('../models/A1_and_A2_112_year_sideproject_7'); // 引入模型
 const A1A2_detailed = require('../models/A1_and_A2_112_year_detailed'); // 引入模型
 
 // 查詢特定ID的資料
@@ -350,7 +354,7 @@ router.get("/region/:region/month/:month", async (req, res) => {
     }
 });
 
-// 查詢並排序在112年特定地區平均每個月受傷人數+平均死亡人數
+// 查詢並排序在112年特定地區平均每個月受傷人數+平均死亡人數(sideproject_3)
 router.get("/region/avg/:region", async (req, res) => {
     const region = req.params.region;
     console.log(`Received request for region: ${region}`); // 日誌輸出
@@ -399,6 +403,292 @@ router.get("/region/avg/:region", async (req, res) => {
         }
         // 返回聚合結果
         res.json(result);
+    } catch (err) {
+        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 查詢並排序特定車種發生事故最多的地區及月份(sideproject_4)
+router.get("/vehicle/:vehicleType", async (req, res) => {
+    const vehicleType = req.params.vehicleType;
+    console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
+    try {
+        const result = await A1A2_sideproject_4.aggregate([
+            {
+                $match: { 車種: vehicleType }
+            },
+            {
+                $group: {
+                    _id: {
+                        地區: "$區序",
+                        月份: "$發生月"
+                    },
+                    受傷人數: { $sum: "$受傷人數" },
+                    總死亡人數: {
+                        $sum: {
+                            $add: [
+                                "$死亡人數",
+                                "$2-30日死亡人數"
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $sort: {
+                    受傷人數: -1, // 按受傷人數降序排序
+                    總死亡人數: -1, // 按總死亡人數降序排序
+                    "_id.地區": 1,
+                    "_id.月份": 1
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    "車種": vehicleType,
+                    "地區": "$_id.地區",
+                    "月份": "$_id.月份",
+                    "受傷人數": "$受傷人數",
+                    "總死亡人數": "$總死亡人數"
+                }
+            }
+        ]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+        res.json(result);
+    } catch (err) {
+        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 查詢並排序特定車種發生事故的特定地區(sideproject_5)
+router.get("/vehicle/:vehicleType/region/:region", async (req, res) => {
+    const vehicleType = req.params.vehicleType;
+    const region = req.params.region;
+    console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
+    console.log(`Received request for vehicle type: ${region}`); // 日誌輸出
+    try {
+        const result = await A1A2_sideproject_5.aggregate([
+            {
+                $match: { 車種: vehicleType,區序:region }
+            },
+            {
+                $group: {
+                    _id: {
+                        地區: "$區序",
+                        月份: "$發生月"
+                    },
+                    受傷人數: { $sum: "$受傷人數" },
+                    總死亡人數: {
+                        $sum: {
+                            $add: [
+                                "$死亡人數",
+                                "$2-30日死亡人數"
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $sort: {
+                    受傷人數: -1, // 按受傷人數降序排序
+                    總死亡人數: -1, // 按總死亡人數降序排序
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    "車種": vehicleType,
+                    "地區": "$_id.地區",
+                    "月份": "$_id.月份",
+                    "受傷人數": "$受傷人數",
+                    "總死亡人數": "$總死亡人數"
+                }
+            }
+        ]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+        res.json(result);
+    } catch (err) {
+        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 查詢特定車種發生事故的特定地區及特定月份(sideproject_6)
+router.get("/vehicle/:vehicleType/region/:region/month/:month", async (req, res) => {
+    const vehicleType = req.params.vehicleType;
+    const region = req.params.region;
+    const month = parseInt(req.params.month);
+    console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
+    console.log(`Received request for vehicle type: ${region}`); // 日誌輸出
+    console.log(`Received request for vehicle type: ${month}`); // 日誌輸出
+    try {
+        const result = await A1A2_sideproject_6.aggregate([
+            {
+                $match: { 車種: vehicleType,區序:region,發生月:month }
+            },
+            {
+                $group: {
+                    _id: {
+                        地區: "$區序",
+                        月份: "$發生月"
+                    },
+                    受傷人數: { $sum: "$受傷人數" },
+                    總死亡人數: {
+                        $sum: {
+                            $add: [
+                                "$死亡人數",
+                                "$2-30日死亡人數"
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    "車種": vehicleType,
+                    "地區": "$_id.地區",
+                    "月份": "$_id.月份",
+                    "受傷人數": "$受傷人數",
+                    "總死亡人數": "$總死亡人數",
+                    "當月死亡率": {
+                        $concat: [
+                            {
+                                $toString: {
+                                    $round: [
+                                        {
+                                            $multiply: [
+                                                { $divide: ["$總死亡人數", "$受傷人數"] },
+                                                100
+                                            ]
+                                        },
+                                        2
+                                    ]
+                                }
+                            },
+                            "%"
+                        ]
+                    }
+                }
+            }
+        ]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+        res.json(result);
+    } catch (err) {
+        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 查詢特定車種在特定年份發生事故的整體相對死亡率(sideproject_7)
+router.get("/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
+    const vehicleType = req.params.vehicleType;
+    const region = req.params.region;
+    const year = parseInt(req.params.year);
+    console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
+    console.log(`Received request for region: ${region}`); // 日誌輸出
+    console.log(`Received request for year: ${year}`); // 日誌輸出
+    try {
+        const result = await A1A2_sideproject_7.aggregate([
+            {
+                // 匹配特定地區及年份的事故記錄
+                $match: {
+                    發生年度: year,
+                    區序: region
+                }
+            },
+            {
+                // $facet 用於同時執行多個聚合管道
+                $facet: {
+                    // 計算所有事故的總受傷人數和總死亡人數
+                    overall: [
+                        {
+                            $group: {
+                                _id: null,
+                                總受傷人數: { $sum: "$受傷人數" },
+                                總死亡人數: {
+                                    $sum: {
+                                        $add: ["$死亡人數", "$2-30日死亡人數"]
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    // 計算特定車種的總受傷人數和總死亡人數
+                    vehicle: [
+                        {
+                            $match: {
+                                車種: vehicleType
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                受傷人數: { $sum: "$受傷人數" },
+                                死亡人數: {
+                                    $sum: {
+                                        $add: ["$死亡人數", "$2-30日死亡人數"]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                // 展平 facet 結果，並計算整體死亡率
+                $project: {
+                    overall: { $arrayElemAt: ["$overall", 0] },
+                    vehicle: { $arrayElemAt: ["$vehicle", 0] }
+                }
+            },
+            {
+                // 將整體死亡率計算為百分比格式
+                $project: {
+                    _id: 0,
+                    "車種": vehicleType,
+                    "地區": region,
+                    "年份": year.toString(),
+                    "整體受傷人數":"$overall.總受傷人數",
+                    "受傷人數": "$vehicle.受傷人數",
+                    "整體死亡人數":"$overall.總死亡人數",
+                    "死亡人數": "$vehicle.死亡人數",
+                    "整體死亡率": {
+                        $concat: [
+                            {
+                                $toString: {
+                                    $round: [
+                                        {
+                                            $multiply: [
+                                                { $divide: ["$vehicle.死亡人數", "$overall.總死亡人數"] },
+                                                100
+                                            ]
+                                        },
+                                        2
+                                    ]
+                                }
+                            },
+                            "%"
+                        ]
+                    }
+                }
+            }
+        ]);
+
+        // 檢查結果並返回
+        if (!result || result.length === 0 || !result[0].受傷人數) {
+            return res.status(404).json({ message: 'No data found' });
+        }
+
+        res.json(result[0]);
     } catch (err) {
         console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
         res.status(500).json({ message: err.message });
