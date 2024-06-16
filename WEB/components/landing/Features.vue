@@ -1,67 +1,76 @@
 <script setup>
-  // 定義功能列表
-  const features = [
-    {
-      title: "Bring Your Own Framework", // 功能標題
-      description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
-      icon: "bx:bxs-briefcase", // 功能圖標
-    },
-    {
-      title: "100% Static HTML, No JS", // 功能標題
-      description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
-      icon: "bx:bxs-window-alt", // 功能圖標
-    },
-    {
-      title: "On-Demand Components", // 功能標題
-      description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
-      icon: "bx:bxs-data", // 功能圖標
-    },
-    {
-      title: "Broad Integration", // 功能標題
-      description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
-      icon: "bx:bxs-bot", // 功能圖標
-    },
-    {
-      title: "SEO Enabled", // 功能標題
-      description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
-      icon: "bx:bxs-file-find", // 功能圖標
-    },
-    {
-      title: "Community", // 功能標題
-      description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
-      icon: "bx:bxs-user", // 功能圖標
-    },
-    {
-      title: "Bring Your Own Framework", // 功能標題
-      description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
-      icon: "bx:bxs-briefcase", // 功能圖標
-    },
-    {
-      title: "100% Static HTML, No JS", // 功能標題
-      description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
-      icon: "bx:bxs-window-alt", // 功能圖標
-    },
-    {
-      title: "On-Demand Components", // 功能標題
-      description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
-      icon: "bx:bxs-data", // 功能圖標
-    },
-    {
-      title: "Broad Integration", // 功能標題
-      description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
-      icon: "bx:bxs-bot", // 功能圖標
-    },
-    {
-      title: "SEO Enabled", // 功能標題
-      description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
-      icon: "bx:bxs-file-find", // 功能圖標
-    },
-    {
-      title: "Community", // 功能標題
-      description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
-      icon: "bx:bxs-user", // 功能圖標
-    },
-  ];
+import { ref } from 'vue';
+
+const selectedEvent = ref('');
+const isDisabled = ref(false);
+
+function updateDisabledState() {
+  isDisabled.value = selectedEvent.value === '特定區域的資料_聚合練習1';
+}
+
+// 定義功能列表
+const features = [
+  {
+    title: "Bring Your Own Framework", // 功能標題
+    description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
+    icon: "bx:bxs-briefcase", // 功能圖標
+  },
+  {
+    title: "100% Static HTML, No JS", // 功能標題
+    description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
+    icon: "bx:bxs-window-alt", // 功能圖標
+  },
+  {
+    title: "On-Demand Components", // 功能標題
+    description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
+    icon: "bx:bxs-data", // 功能圖標
+  },
+  {
+    title: "Broad Integration", // 功能標題
+    description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
+    icon: "bx:bxs-bot", // 功能圖標
+  },
+  {
+    title: "SEO Enabled", // 功能標題
+    description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
+    icon: "bx:bxs-file-find", // 功能圖標
+  },
+  {
+    title: "Community", // 功能標題
+    description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
+    icon: "bx:bxs-user", // 功能圖標
+  },
+  {
+    title: "Bring Your Own Framework", // 功能標題
+    description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
+    icon: "bx:bxs-briefcase", // 功能圖標
+  },
+  {
+    title: "100% Static HTML, No JS", // 功能標題
+    description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
+    icon: "bx:bxs-window-alt", // 功能圖標
+  },
+  {
+    title: "On-Demand Components", // 功能標題
+    description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
+    icon: "bx:bxs-data", // 功能圖標
+  },
+  {
+    title: "Broad Integration", // 功能標題
+    description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
+    icon: "bx:bxs-bot", // 功能圖標
+  },
+  {
+    title: "SEO Enabled", // 功能標題
+    description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
+    icon: "bx:bxs-file-find", // 功能圖標
+  },
+  {
+    title: "Community", // 功能標題
+    description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
+    icon: "bx:bxs-user", // 功能圖標
+  },
+];
 </script>
 
 <template>
@@ -73,15 +82,18 @@
     <p class="text-lg mt-4 text-slate-600">
       請透過下方Selection Box得以獲取進一步的分析資料內容
     </p>
-    <!-- 添加選擇框 -->
     <div class="mt-4 flex space-x-4"> <!-- 使用 Flexbox 佈局，並添加間距 -->
-      <select class="p-2 border rounded">
+      <select class="p-2 border rounded" v-model="selectedEvent" @change="updateDisabledState">
+        <option value="">查詢事件</option>
+        <option value="aggregate_1">特定區域的資料_聚合練習1</option>
+      </select>
+      <select class="p-2 border rounded" :disabled="isDisabled">
         <option value="">發生年度</option>
         <option value="112">112</option>
         <option value="111">111</option>
         <option value="110">110</option>
       </select>
-      <select class="p-2 border rounded">
+      <select class="p-2 border rounded" :disabled="isDisabled">
         <option value="">發生月</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -96,7 +108,7 @@
         <option value="11">11</option>
         <option value="12">12</option>
       </select>
-      <select class="p-2 border rounded">
+      <select class="p-2 border rounded" :disabled="isDisabled">
         <option value="">選擇地區</option>
         <option value="01">大同區</option>
         <option value="02">萬華區</option>
@@ -111,8 +123,7 @@
         <option value="11">南港區</option>
         <option value="12">內湖區</option>
       </select>
-      <!-- 添加車種選擇框 -->
-      <select class="p-2 border rounded">
+      <select class="p-2 border rounded" :disabled="isDisabled">
         <option value="">選擇車種</option>
         <optgroup label="大客車">
           <option value="A01">公營公車</option>
@@ -146,7 +157,6 @@
         <optgroup label="小貨車">
           <option value="B11">營業用</option>
           <option value="B12">自用</option>
-          <option value="B13">租賃小貨車</option>
         </optgroup>
         <optgroup label="機車">
           <option value="C01">大型重型1 (550C.C.以上)</option>
@@ -170,11 +180,10 @@
         <optgroup label="慢車">
           <option value="F01">腳踏自行車</option>
           <option value="F02">電動輔助自行車</option>
-          <option value="F03">微型電動二輪車</option>
+          <option value="F03">電動自行車</option>
           <option value="F04">人力車</option>
           <option value="F05">獸力車</option>
           <option value="F06">其他慢車</option>
-          <option value="F07">個人行動運具</option>
         </optgroup>
         <optgroup label="其他車">
           <option value="G01">拼裝車</option>
@@ -183,15 +192,14 @@
           <option value="G04">拖車(架)</option>
           <option value="G05">火車</option>
           <option value="G06">其他車</option>
-          <option value="G07">大眾捷運系統車輛</option>
         </optgroup>
         <optgroup label="人">
           <option value="H01">行人</option>
           <option value="H02">乘客</option>
           <option value="H03">其他人</option>
-          <option value="H04">輔助代步器材</option>
         </optgroup>
       </select>
+      <button class="p-2 bg-blue-500 text-white rounded">確定</button>
     </div>
   </div>
 

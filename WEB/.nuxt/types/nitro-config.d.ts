@@ -3,7 +3,7 @@
 // App Config
 import type { Defu } from 'defu'
 
-import type { default as appConfig0 } from "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/新增資料夾/app.config";
+import type { default as appConfig0 } from "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/WEB/app.config";
 
 type UserAppConfig = Defu<{}, [typeof appConfig0]>
 

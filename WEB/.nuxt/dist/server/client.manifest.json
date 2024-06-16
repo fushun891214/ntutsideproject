@@ -7,12 +7,12 @@
     "module": true,
     "resourceType": "script"
   },
-  "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/新增資料夾/node_modules/nuxt/dist/app/entry.js": {
+  "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/WEB/node_modules/nuxt/dist/app/entry.js": {
     "resourceType": "script",
     "module": true,
     "prefetch": true,
     "preload": true,
     "isEntry": true,
-    "file": "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/新增資料夾/node_modules/nuxt/dist/app/entry.js"
+    "file": "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/WEB/node_modules/nuxt/dist/app/entry.js"
   }
 }
