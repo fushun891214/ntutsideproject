@@ -2,37 +2,37 @@
 GET http://localhost:3000/A1_and_A2_112_year/id/6663cb7d525073746a7a5aa3
 Content-Type: application/json
 
-### 聚合查詢特定區域的資料_聚合練習1
-GET http://localhost:3000/A1_and_A2_112_year/aggregate_1
+### 聚合112年特定區域的資料_聚合練習1
+GET http://localhost:5000/A1_and_A2_112_year/aggregate_1
 Content-Type: application/json
 
-### 聚合查詢特定區域的資料_聚合練習2
-GET http://localhost:3000/A1_and_A2_112_year/aggregate_2
+### 聚合112年特定區域的資料_聚合練習2
+GET http://localhost:5000/A1_and_A2_112_year/aggregate_2
 Content-Type: application/json
 
-### 聚合查詢特定區域的資料_聚合練習3
-GET http://localhost:3000/A1_and_A2_112_year/aggregate_3
+### 聚合112年特定區域的資料_聚合練習3
+GET http://localhost:5000/A1_and_A2_112_year/aggregate_3
 Content-Type: application/json
 
 ### 查詢並排序在112年特定地區的受傷人數+總死亡人數(sideproject_1)
-GET http://localhost:3000/A1_and_A2_112_year/region/sum/05中正區
+GET http://localhost:5000/A1_and_A2_112_year/region/sum/05中正區
 Content-Type: application/json
 
 ### 查詢並排序在112年特定地區特定月份的受傷人數+總死亡人數(sideproject_2)
-GET http://localhost:3000/A1_and_A2_112_year/region/05中正區/month/10
+GET http://localhost:5000/A1_and_A2_112_year/region/05中正區/month/10
 Content-Type: application/json
 
 ### 查詢並排序在112年特定地區平均每個月受傷人數+死亡人數(sideproject_3)
-GET http://localhost:3000/A1_and_A2_112_year/region/avg/03中山區
+GET http://localhost:5000/A1_and_A2_112_year/region/avg/03中山區
 
 ### 查詢並排序特定車種發生事故最多的地區及月份(sideproject_4)
-GET http://localhost:3000/A1_and_A2_112_year/vehicle/C03
+GET http://localhost:5000/A1_and_A2_112_year/vehicle/C03
 
 ### 查詢並排序特定車種發生事故的特定地區(sideproject_5)
-GET http://localhost:3000/A1_and_A2_112_year/vehicle/C03/region/03中山區 
+GET http://localhost:5000/A1_and_A2_112_year/vehicle/C03/region/03中山區 
 
 ### 查詢特定車種發生事故的特定地區及特定月份及死亡率(sideproject_6)
-GET http://localhost:3000/A1_and_A2_112_year/vehicle/C03/region/03中山區/month/5
+GET http://localhost:5000/A1_and_A2_112_year/vehicle/C03/region/03中山區/month/5
 
 ### 查詢特定車種當年度發生事故的死亡率(sideproject_7)
-GET http://localhost:3000/A1_and_A2_112_year/year/112/vehicle/H01/region/03中山區
+GET http://localhost:5000/A1_and_A2_112_year/year/112/vehicle/H01/region/03中山區

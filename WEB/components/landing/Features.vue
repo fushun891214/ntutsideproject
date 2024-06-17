@@ -1,76 +1,52 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-const selectedEvent = ref('');
-const isDisabled = ref(false);
+// 選擇的事件類型變量
+const selectedEvent = ref('112年特定區域的資料_聚合練習1'); // 預設選擇112年特定區域的資料_聚合練習1
+// 控制是否禁用選擇框的變量
+const isDisabled = ref(true);
+// API返回的數據變量
+const apiResponse = ref([]);
 
+// 更新選擇框禁用狀態的函數
 function updateDisabledState() {
-  isDisabled.value = selectedEvent.value === '特定區域的資料_聚合練習1';
+  isDisabled.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
+                     selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
+                     selectedEvent.value === '112年特定區域的資料_聚合練習3';
+  console.log('Update Disabled State: ', isDisabled.value);
 }
 
-// 定義功能列表
-const features = [
-  {
-    title: "Bring Your Own Framework", // 功能標題
-    description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
-    icon: "bx:bxs-briefcase", // 功能圖標
-  },
-  {
-    title: "100% Static HTML, No JS", // 功能標題
-    description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
-    icon: "bx:bxs-window-alt", // 功能圖標
-  },
-  {
-    title: "On-Demand Components", // 功能標題
-    description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
-    icon: "bx:bxs-data", // 功能圖標
-  },
-  {
-    title: "Broad Integration", // 功能標題
-    description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
-    icon: "bx:bxs-bot", // 功能圖標
-  },
-  {
-    title: "SEO Enabled", // 功能標題
-    description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
-    icon: "bx:bxs-file-find", // 功能圖標
-  },
-  {
-    title: "Community", // 功能標題
-    description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
-    icon: "bx:bxs-user", // 功能圖標
-  },
-  {
-    title: "Bring Your Own Framework", // 功能標題
-    description: "Build your site using Vue, web components, or just plain ol' HTML + JavaScript.", // 功能描述
-    icon: "bx:bxs-briefcase", // 功能圖標
-  },
-  {
-    title: "100% Static HTML, No JS", // 功能標題
-    description: "Nuxt renders your entire page to static HTML, removing all JavaScript from your final build by default.", // 功能描述
-    icon: "bx:bxs-window-alt", // 功能圖標
-  },
-  {
-    title: "On-Demand Components", // 功能標題
-    description: "Need some JS? Nuxt can automatically hydrate interactive components when they become visible on the page.", // 功能描述
-    icon: "bx:bxs-data", // 功能圖標
-  },
-  {
-    title: "Broad Integration", // 功能標題
-    description: "Nuxt supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.", // 功能描述
-    icon: "bx:bxs-bot", // 功能圖標
-  },
-  {
-    title: "SEO Enabled", // 功能標題
-    description: "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!", // 功能描述
-    icon: "bx:bxs-file-find", // 功能圖標
-  },
-  {
-    title: "Community", // 功能標題
-    description: "Nuxt is an open source project powered by hundreds of contributors making thousands of individual contributions.", // 功能描述
-    icon: "bx:bxs-user", // 功能圖標
-  },
-];
+// 發送API請求並處理響應的函數
+async function fetchApiData() {
+  console.log('fetchApiData function called'); // 確認函數被調用
+  let apiUrl = '';
+  if (selectedEvent.value === '112年特定區域的資料_聚合練習1') {
+    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_1';
+  } else if (selectedEvent.value === '112年特定區域的資料_聚合練習2') {
+    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_2';
+  } else if (selectedEvent.value === '112年特定區域的資料_聚合練習3') {
+    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_3';
+  }
+
+  if (apiUrl) {
+    try {
+      console.log('Fetching data...'); // 確認進入到if分支
+      const response = await axios.get(apiUrl);
+      console.log('API Response:', response.data); // 檢查 API 回應
+      apiResponse.value = response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  } else {
+    console.log('Selected event does not match'); // 確認選擇事件是否匹配
+  }
+}
+
+// 頁面加載時調用fetchApiData函數
+onMounted(() => {
+  fetchApiData();
+});
 </script>
 
 <template>
@@ -85,7 +61,9 @@ const features = [
     <div class="mt-4 flex space-x-4"> <!-- 使用 Flexbox 佈局，並添加間距 -->
       <select class="p-2 border rounded" v-model="selectedEvent" @change="updateDisabledState">
         <option value="">查詢事件</option>
-        <option value="aggregate_1">特定區域的資料_聚合練習1</option>
+        <option value="112年特定區域的資料_聚合練習1">112年特定區域的資料_聚合練習1</option>
+        <option value="112年特定區域的資料_聚合練習2">112年特定區域的資料_聚合練習2</option>
+        <option value="112年特定區域的資料_聚合練習3">112年特定區域的資料_聚合練習3</option>
       </select>
       <select class="p-2 border rounded" :disabled="isDisabled">
         <option value="">發生年度</option>
@@ -199,24 +177,19 @@ const features = [
           <option value="H03">其他人</option>
         </optgroup>
       </select>
-      <button class="p-2 bg-blue-500 text-white rounded">確定</button>
+      <!-- 確定按鈕，點擊後調用fetchApiData函數 -->
+      <button class="p-2 bg-blue-500 text-white rounded" @click="fetchApiData">確定</button>
     </div>
   </div>
 
-  <!-- 功能列表 -->
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
-    <!-- 遍歷 features 數組並顯示每個功能項 -->
-    <div v-for="item of features" class="flex gap-4 items-start">
-      <!-- 功能圖標 -->
-      <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
-        <Icon class="text-white" :name="item.icon" />
-      </div>
-      <!-- 功能標題和描述 -->
-      <div>
-        <h3 class="font-semibold text-lg">{{ item.title }}</h3>
-        <p class="text-slate-500 mt-2 leading-relaxed">
-          {{ item.description }}
-        </p>
+  <!-- 顯示API查詢結果 -->
+  <div v-if="apiResponse.length > 0" class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">查詢結果</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div v-for="item in apiResponse" :key="item._id" class="p-4 border rounded shadow">
+        <div v-for="(value, key) in item" :key="key">
+          <p><strong>{{ key }}:</strong> {{ value }}</p>
+        </div>
       </div>
     </div>
   </div>
