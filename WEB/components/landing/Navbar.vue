@@ -65,8 +65,8 @@
         </div>
       </div>
       <!-- 桌面版選單 -->
-      <!--
-      <nav
+      
+      <!-- <nav
         class="w-full lg:w-auto mt-2 lg:flex lg:mt-0"
         :class="{ block: open, hidden: !open }"
       >
@@ -80,8 +80,8 @@
             </a>
           </li>
         </ul>
-      </nav>
-      -->
+      </nav> -->
+     
     </header>
   </LandingContainer>
 </template>

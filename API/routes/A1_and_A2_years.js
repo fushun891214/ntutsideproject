@@ -4,16 +4,16 @@ const express = require("express");
 const router = express.Router();
 
 // 引入各個模型
-const A1A2_aggregate_1 = require('../models/A1_and_A2_112_year_aggregate_1'); // 引入模型
-const A1A2_aggregate_2 = require('../models/A1_and_A2_112_year_aggregate_2'); // 引入模型
-const A1A2_aggregate_3 = require('../models/A1_and_A2_112_year_aggregate_3'); // 引入模型
-const A1A2_sideproject_1 = require('../models/A1_and_A2_112_year_sideproject_1'); // 引入模型
-const A1A2_sideproject_2 = require('../models/A1_and_A2_112_year_sideproject_2'); // 引入模型
-const A1A2_sideproject_3 = require('../models/A1_and_A2_112_year_sideproject_3'); // 引入模型
-const A1A2_sideproject_4 = require('../models/A1_and_A2_112_year_sideproject_4'); // 引入模型
-const A1A2_sideproject_5 = require('../models/A1_and_A2_112_year_sideproject_5'); // 引入模型
-const A1A2_sideproject_6 = require('../models/A1_and_A2_112_year_sideproject_6'); // 引入模型
-const A1A2_sideproject_7 = require('../models/A1_and_A2_112_year_sideproject_7'); // 引入模型
+const A1A2_aggregate_1 = require('../models/A1_and_A2_years_aggregate_1'); // 引入模型
+const A1A2_aggregate_2 = require('../models/A1_and_A2_years_aggregate_2'); // 引入模型
+const A1A2_aggregate_3 = require('../models/A1_and_A2_years_aggregate_3'); // 引入模型
+const A1A2_sideproject_1 = require('../models/A1_and_A2_years_sideproject_1'); // 引入模型
+const A1A2_sideproject_2 = require('../models/A1_and_A2_years_sideproject_2'); // 引入模型
+const A1A2_sideproject_3 = require('../models/A1_and_A2_years_sideproject_3'); // 引入模型
+const A1A2_sideproject_4 = require('../models/A1_and_A2_years_sideproject_4'); // 引入模型
+const A1A2_sideproject_5 = require('../models/A1_and_A2_years_sideproject_5'); // 引入模型
+const A1A2_sideproject_6 = require('../models/A1_and_A2_years_sideproject_6'); // 引入模型
+const A1A2_sideproject_7 = require('../models/A1_and_A2_years_sideproject_7'); // 引入模型
 const A1A2_detailed = require('../models/A1_and_A2_112_year_detailed'); // 引入模型
 
 // 查詢特定ID的資料
@@ -235,16 +235,18 @@ router.get("/aggregate_3", async (req, res) => {
     }
 });
 
-// 查詢並排序在112年特定地區的受傷人數+總死亡人數(sideproject_1)
-router.get("/region/sum/:region/", async (req, res) => {
+// 查詢並排序在特定年份特定地區的總受傷人數+總死亡人數(sideproject_1)
+router.get("/sum/year/:year/region/:region", async (req, res) => {
     // 獲取請求參數中的region
     const region = req.params.region;
+    const year = parseInt(req.params.year);
     console.log(`Received request for region: ${region}`); // 日誌輸出
+    console.log(`Received request for year: ${year}`); // 日誌輸出
     try {
         // 執行聚合查詢
         const result = await A1A2_sideproject_1.aggregate([
             {
-                $match: { 區序: region }
+                $match: { 區序: region,發生年度:year}
             },
             {
                 $group: 
@@ -252,6 +254,7 @@ router.get("/region/sum/:region/", async (req, res) => {
                     _id:
                     {
                         地區: "$區序",
+                        年度: "$發生年度",
                         月份: "$發生月"
                     },
                     受傷人數: { $sum: "$受傷人數" },
@@ -280,6 +283,7 @@ router.get("/region/sum/:region/", async (req, res) => {
                 {
                     _id: 0,
                     "地區": "$_id.地區",
+                    "年度": "$_id.年度",
                     "月份": "$_id.月份",
                     "受傷人數": "$受傷人數",
                     "總死亡人數": "$總死亡人數"
@@ -297,18 +301,20 @@ router.get("/region/sum/:region/", async (req, res) => {
     }
 });
 
-// 查詢並排序在112年特定地區特定月份的受傷人數+總死亡人數(sideproject_2)
-router.get("/region/:region/month/:month", async (req, res) => {
+// 查詢並排序在特定年份特定地區特定月份的總受傷人數+總死亡人數(sideproject_2)
+router.get("/sum/year/:year/region/:region/month/:month", async (req, res) => {
     // 獲取請求參數中的region
     const region = req.params.region;
+    const year = parseInt(req.params.year);
     const month = parseInt(req.params.month);
     console.log(`Received request for region: ${region}`); // 日誌輸出
+    console.log(`Received request for year: ${year}`); // 日誌輸出
     console.log(`Received request for month: ${month}`); // 日誌輸出
     try {
         // 執行聚合查詢
         const result = await A1A2_sideproject_2.aggregate([
             {
-                $match: { 區序: region,發生月:month }
+                $match: { 區序: region,發生年度:year,發生月:month }
             },
             {
                 $group: 
@@ -316,6 +322,7 @@ router.get("/region/:region/month/:month", async (req, res) => {
                     _id:
                     {
                         地區: "$區序",
+                        年度: "$發生年度",
                         月份: "$發生月"
                     },
                     受傷人數: { $sum: "$受傷人數" },
@@ -337,6 +344,7 @@ router.get("/region/:region/month/:month", async (req, res) => {
                 {
                     _id: 0,
                     "地區": "$_id.地區",
+                    "年度": "$_id.年度",
                     "月份": "$_id.月份",
                     "受傷人數": "$受傷人數",
                     "總死亡人數": "$總死亡人數"
@@ -354,22 +362,24 @@ router.get("/region/:region/month/:month", async (req, res) => {
     }
 });
 
-// 查詢並排序在112年特定地區平均每個月受傷人數+平均死亡人數(sideproject_3)
-router.get("/region/avg/:region", async (req, res) => {
+// 查詢並排序在特定年份特定地區平均每個月受傷人數+死亡人數(sideproject_3)
+router.get("/avg/year/:year/region/:region", async (req, res) => {
     const region = req.params.region;
+    const year = parseInt(req.params.year);
     console.log(`Received request for region: ${region}`); // 日誌輸出
+    console.log(`Received request for year: ${year}`); // 日誌輸出
     try {
         // 執行聚合查詢
         const result = await A1A2_sideproject_3.aggregate([
             {
-                $match: { 區序: region }
+                $match: { 區序: region, 發生年度: year } // 匹配特定區域和年份
             },
             {
                 $group: 
                 {
                     _id: {
-                        地區: "$區序",
-                        月份: "$發生月"
+                        月份: "$發生月",
+                        年度: "$發生年度" // 保留年度
                     },
                     受傷人數: { $sum: "$受傷人數" },
                     總死亡人數: {
@@ -384,7 +394,10 @@ router.get("/region/avg/:region", async (req, res) => {
             },
             {
                 $group: {
-                    _id: "$_id.地區",
+                    _id: {
+                        年度: "$_id.年度",
+                        地區: region // 保留地區
+                    },
                     平均受傷人數: { $avg: "$受傷人數" },
                     平均死亡人數: { $avg: "$總死亡人數" }
                 }
@@ -392,9 +405,10 @@ router.get("/region/avg/:region", async (req, res) => {
             {
                 $project: {
                     _id: 0,
-                    "地區": "$_id",
-                    "平均受傷人數": "$平均受傷人數",
-                    "平均死亡人數": "$平均死亡人數"
+                    地區: "$_id.地區",
+                    年度: "$_id.年度",
+                    平均受傷人數: "$平均受傷人數",
+                    平均死亡人數: "$平均死亡人數"
                 }
             }
         ]);
@@ -409,19 +423,22 @@ router.get("/region/avg/:region", async (req, res) => {
     }
 });
 
-// 查詢並排序特定車種發生事故最多的地區及月份(sideproject_4)
-router.get("/vehicle/:vehicleType", async (req, res) => {
+// 查詢並排序在特定年份特定車種發生事故最多的地區及月份(sideproject_4)
+router.get("/sum/year/:year/vehicle/:vehicleType", async (req, res) => {
     const vehicleType = req.params.vehicleType;
+    const year = parseInt(req.params.year);
     console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
+    console.log(`Received request for year type: ${year}`); // 日誌輸出
     try {
         const result = await A1A2_sideproject_4.aggregate([
             {
-                $match: { 車種: vehicleType }
+                $match: { 車種: vehicleType ,發生年度:year}
             },
             {
                 $group: {
                     _id: {
                         地區: "$區序",
+                        年度: "$發生年度",
                         月份: "$發生月"
                     },
                     受傷人數: { $sum: "$受傷人數" },
@@ -448,6 +465,7 @@ router.get("/vehicle/:vehicleType", async (req, res) => {
                     _id: 0,
                     "車種": vehicleType,
                     "地區": "$_id.地區",
+                    "年度": "$_id.年度",
                     "月份": "$_id.月份",
                     "受傷人數": "$受傷人數",
                     "總死亡人數": "$總死亡人數"
@@ -464,21 +482,24 @@ router.get("/vehicle/:vehicleType", async (req, res) => {
     }
 });
 
-// 查詢並排序特定車種發生事故的特定地區(sideproject_5)
-router.get("/vehicle/:vehicleType/region/:region", async (req, res) => {
+// 查詢並排序在特定年份特定車種發生事故的特定地區(sideproject_5)
+router.get("/sum/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
+    const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;
     const region = req.params.region;
     console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
-    console.log(`Received request for vehicle type: ${region}`); // 日誌輸出
+    console.log(`Received request for region type: ${region}`); // 日誌輸出
+    console.log(`Received request for year type: ${year}`); // 日誌輸出
     try {
         const result = await A1A2_sideproject_5.aggregate([
             {
-                $match: { 車種: vehicleType,區序:region }
+                $match: { 發生年度:year,車種: vehicleType,區序:region }
             },
             {
                 $group: {
                     _id: {
                         地區: "$區序",
+                        年度: "$發生年度",
                         月份: "$發生月"
                     },
                     受傷人數: { $sum: "$受傷人數" },
@@ -503,6 +524,7 @@ router.get("/vehicle/:vehicleType/region/:region", async (req, res) => {
                     _id: 0,
                     "車種": vehicleType,
                     "地區": "$_id.地區",
+                    "年度": "$_id.年度",
                     "月份": "$_id.月份",
                     "受傷人數": "$受傷人數",
                     "總死亡人數": "$總死亡人數"
@@ -519,23 +541,26 @@ router.get("/vehicle/:vehicleType/region/:region", async (req, res) => {
     }
 });
 
-// 查詢特定車種發生事故的特定地區及特定月份(sideproject_6)
-router.get("/vehicle/:vehicleType/region/:region/month/:month", async (req, res) => {
+// 查詢在特定年份特定車種發生事故的特定地區及特定月份(sideproject_6)
+router.get("/mortality_rate/year/:year/month/:month/vehicle/:vehicleType/region/:region", async (req, res) => {
+    const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;
     const region = req.params.region;
     const month = parseInt(req.params.month);
+    console.log(`Received request for vehicle type: ${year}`); // 日誌輸出
     console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
     console.log(`Received request for vehicle type: ${region}`); // 日誌輸出
     console.log(`Received request for vehicle type: ${month}`); // 日誌輸出
     try {
         const result = await A1A2_sideproject_6.aggregate([
             {
-                $match: { 車種: vehicleType,區序:region,發生月:month }
+                $match: { 發生年度:year,車種: vehicleType,區序:region,發生月:month }
             },
             {
                 $group: {
                     _id: {
                         地區: "$區序",
+                        年度: "$發生年度",
                         月份: "$發生月"
                     },
                     受傷人數: { $sum: "$受傷人數" },
@@ -554,6 +579,7 @@ router.get("/vehicle/:vehicleType/region/:region/month/:month", async (req, res)
                     _id: 0,
                     "車種": vehicleType,
                     "地區": "$_id.地區",
+                    "年度": "$_id.年度",
                     "月份": "$_id.月份",
                     "受傷人數": "$受傷人數",
                     "總死亡人數": "$總死亡人數",
@@ -588,18 +614,18 @@ router.get("/vehicle/:vehicleType/region/:region/month/:month", async (req, res)
     }
 });
 
-// 查詢特定車種在特定年份發生事故的整體相對死亡率(sideproject_7)
-router.get("/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
+// 查詢在特定年份特定車種在特定年份發生事故的整體相對死亡率(sideproject_7)
+router.get("/mortality_rate/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
+    const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;
     const region = req.params.region;
-    const year = parseInt(req.params.year);
+    console.log(`Received request for year: ${year}`); // 日誌輸出
     console.log(`Received request for vehicle type: ${vehicleType}`); // 日誌輸出
     console.log(`Received request for region: ${region}`); // 日誌輸出
-    console.log(`Received request for year: ${year}`); // 日誌輸出
     try {
         const result = await A1A2_sideproject_7.aggregate([
             {
-                // 匹配特定地區及年份的事故記錄
+                // 匹配特定地區及年份及車種的事故記錄
                 $match: {
                     發生年度: year,
                     區序: region

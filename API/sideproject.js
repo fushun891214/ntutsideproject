@@ -3,7 +3,7 @@ const express = require('express');
 // 引入mongoose庫，用於與MongoDB進行交互
 const mongoose = require('mongoose');
 // 引入自定義的路由模塊
-const A1A2Routes = require('./routes/A1_and_A2_112_year');
+const A1A2Routes = require('./routes/A1_and_A2_years');
 // 引入cors庫，用於處理跨域請求
 const cors = require('cors');
 
@@ -28,8 +28,8 @@ db.once('open', () => {
 // 使用Express的JSON中介軟體來解析JSON請求體
 app.use(express.json());
 
-// 使用自定義的路由模塊，當請求路徑以'/A1_and_A2_112_year'開頭時，使用A1A2Routes路由處理
-app.use('/A1_and_A2_112_year', A1A2Routes);
+// 使用自定義的路由模塊，當請求路徑以'/A1_and_A2_years'開頭時，使用A1A2Routes路由處理
+app.use('/A1_and_A2_years', A1A2Routes);
 
 // 設定服務器監聽的端口，優先使用環境變量中的PORT值，否則使用3000端口
 const PORT = process.env.PORT || 5000;

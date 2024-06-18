@@ -22,11 +22,11 @@ async function fetchApiData() {
   console.log('fetchApiData function called'); // 確認函數被調用
   let apiUrl = '';
   if (selectedEvent.value === '112年特定區域的資料_聚合練習1') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_1';
+    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_1';
   } else if (selectedEvent.value === '112年特定區域的資料_聚合練習2') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_2';
+    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_2';
   } else if (selectedEvent.value === '112年特定區域的資料_聚合練習3') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_112_year/aggregate_3';
+    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_3';
   }
 
   if (apiUrl) {
