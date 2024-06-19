@@ -34,5 +34,5 @@ GET http://localhost:5000/A1_and_A2_years/sum/year/111/vehicle/C03/region/03中�
 ### 查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率(sideproject_6)
 GET http://localhost:5000/A1_and_A2_years/mortality_rate/year/110/month/5/vehicle/C03/region/03中山區
 
-### 查詢特定車種當年度發生事故的死亡率(sideproject_7)
+### 查詢特定車種當年度在特定地區發生事故的死亡率(sideproject_7)
 GET http://localhost:5000/A1_and_A2_years/mortality_rate/year/112/vehicle/H01/region/03中山區

@@ -5,28 +5,76 @@ import axios from 'axios';
 // 選擇的事件類型變量
 const selectedEvent = ref('112年特定區域的資料_聚合練習1'); // 預設選擇112年特定區域的資料_聚合練習1
 // 控制是否禁用選擇框的變量
-const isDisabled = ref(true);
+const isDisabledYear = ref(true);
+const isDisabledMonth = ref(false);
+const isDisabledRegion = ref(true);
+const isDisabledVehicle = ref(false);
 // API返回的數據變量
 const apiResponse = ref([]);
+const mortalityRateResponse = ref(null); // 新增變數來存儲特定API的結果
+
+// 發生年度、月和車種選擇的變量
+const selectedYear = ref('');
+const selectedMonth = ref('');
+const selectedRegion = ref('');
+const selectedVehicle = ref('');
 
 // 更新選擇框禁用狀態的函數
 function updateDisabledState() {
-  isDisabled.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
-                     selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
-                     selectedEvent.value === '112年特定區域的資料_聚合練習3';
-  console.log('Update Disabled State: ', isDisabled.value);
+  isDisabledYear.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
+                         selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
+                         selectedEvent.value === '112年特定區域的資料_聚合練習3';
+
+  isDisabledMonth.value = selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數' || 
+                          selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數' ||
+                          selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份' ||
+                          selectedEvent.value === '查詢並排序在特定年份特定車種發生事故的特定地區' ||
+                          selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率';
+
+  isDisabledRegion.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
+                           selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
+                           selectedEvent.value === '112年特定區域的資料_聚合練習3' ||
+                           selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份';
+
+  isDisabledVehicle.value = selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數'|| 
+                          selectedEvent.value === '查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數' ||
+                          selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數';
+
+  console.log('Update Disabled State: ', isDisabledYear.value, isDisabledMonth.value, isDisabledRegion.value, isDisabledVehicle.value);
 }
 
 // 發送API請求並處理響應的函數
 async function fetchApiData() {
   console.log('fetchApiData function called'); // 確認函數被調用
   let apiUrl = '';
+  mortalityRateResponse.value = null; // 重置變數
+  
   if (selectedEvent.value === '112年特定區域的資料_聚合練習1') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_1';
   } else if (selectedEvent.value === '112年特定區域的資料_聚合練習2') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_2';
   } else if (selectedEvent.value === '112年特定區域的資料_聚合練習3') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_3';
+  } else if (selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+  }
+  else if (selectedEvent.value === '查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
+  }
+  else if (selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+  }
+  else if (selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
+  }
+  else if (selectedEvent.value === '查詢並排序在特定年份特定車種發生事故的特定地區') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+  }
+  else if (selectedEvent.value === '查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+  }
+  else if (selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
 
   if (apiUrl) {
@@ -34,7 +82,11 @@ async function fetchApiData() {
       console.log('Fetching data...'); // 確認進入到if分支
       const response = await axios.get(apiUrl);
       console.log('API Response:', response.data); // 檢查 API 回應
-      apiResponse.value = response.data;
+      if (selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率') {
+        mortalityRateResponse.value = response.data; // 更新特定API的結果
+      } else {
+        apiResponse.value = response.data;
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -64,14 +116,21 @@ onMounted(() => {
         <option value="112年特定區域的資料_聚合練習1">112年特定區域的資料_聚合練習1</option>
         <option value="112年特定區域的資料_聚合練習2">112年特定區域的資料_聚合練習2</option>
         <option value="112年特定區域的資料_聚合練習3">112年特定區域的資料_聚合練習3</option>
+        <option value="查詢並排序在特定年度特定地區的受傷人數+總死亡人數">查詢並排序在特定年度特定地區的受傷人數+總死亡人數</option>
+        <option value="查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數">查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數</option>
+        <option value="查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數">查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數</option>
+        <option value="查詢並排序在特定年份特定車種發生事故最多的地區及月份">查詢並排序在特定年份特定車種發生事故最多的地區及月份</option>
+        <option value="查詢並排序在特定年份特定車種發生事故的特定地區">查詢並排序在特定年份特定車種發生事故的特定地區</option>
+        <option value="查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率">查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率</option>
+        <option value="查詢特定車種當年度在特定地區發生事故的死亡率">查詢特定車種當年度在特定地區發生事故的死亡率</option>
       </select>
-      <select class="p-2 border rounded" :disabled="isDisabled">
+      <select class="p-2 border rounded" v-model="selectedYear" :disabled="isDisabledYear">
         <option value="">發生年度</option>
         <option value="112">112</option>
         <option value="111">111</option>
         <option value="110">110</option>
       </select>
-      <select class="p-2 border rounded" :disabled="isDisabled">
+      <select class="p-2 border rounded" v-model="selectedMonth" :disabled="isDisabledMonth">
         <option value="">發生月</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -86,22 +145,22 @@ onMounted(() => {
         <option value="11">11</option>
         <option value="12">12</option>
       </select>
-      <select class="p-2 border rounded" :disabled="isDisabled">
+      <select class="p-2 border rounded" v-model="selectedRegion" :disabled="isDisabledRegion">
         <option value="">選擇地區</option>
-        <option value="01">大同區</option>
-        <option value="02">萬華區</option>
-        <option value="03">中山區</option>
-        <option value="04">大安區</option>
-        <option value="05">中正區</option>
-        <option value="06">松山區</option>
-        <option value="07">信義區</option>
-        <option value="08">士林區</option>
-        <option value="09">北投區</option>
-        <option value="10">文山區</option>
-        <option value="11">南港區</option>
-        <option value="12">內湖區</option>
+        <option value="01大同區">大同區</option>
+        <option value="02萬華區">萬華區</option>
+        <option value="03中山區">中山區</option>
+        <option value="04大安區">大安區</option>
+        <option value="05中正區">中正區</option>
+        <option value="06松山區">松山區</option>
+        <option value="07信義區">信義區</option>
+        <option value="08士林區">士林區</option>
+        <option value="09北投區">北投區</option>
+        <option value="10文山區">文山區</option>
+        <option value="11南港區">南港區</option>
+        <option value="12內湖區">內湖區</option>
       </select>
-      <select class="p-2 border rounded" :disabled="isDisabled">
+      <select class="p-2 border rounded" v-model="selectedVehicle" :disabled="isDisabledVehicle">
         <option value="">選擇車種</option>
         <optgroup label="大客車">
           <option value="A01">公營公車</option>
@@ -135,6 +194,7 @@ onMounted(() => {
         <optgroup label="小貨車">
           <option value="B11">營業用</option>
           <option value="B12">自用</option>
+          <option value="B13">租賃小貨車</option>
         </optgroup>
         <optgroup label="機車">
           <option value="C01">大型重型1 (550C.C.以上)</option>
@@ -162,6 +222,7 @@ onMounted(() => {
           <option value="F04">人力車</option>
           <option value="F05">獸力車</option>
           <option value="F06">其他慢車</option>
+          <option value="F07">個人行動運具</option>
         </optgroup>
         <optgroup label="其他車">
           <option value="G01">拼裝車</option>
@@ -170,11 +231,13 @@ onMounted(() => {
           <option value="G04">拖車(架)</option>
           <option value="G05">火車</option>
           <option value="G06">其他車</option>
+          <option value="G07">大眾捷運系統車輛</option>
         </optgroup>
         <optgroup label="人">
           <option value="H01">行人</option>
           <option value="H02">乘客</option>
           <option value="H03">其他人</option>
+          <option value="H04">輔助代步器材</option>
         </optgroup>
       </select>
       <!-- 確定按鈕，點擊後調用fetchApiData函數 -->
@@ -183,13 +246,23 @@ onMounted(() => {
   </div>
 
   <!-- 顯示API查詢結果 -->
-  <div v-if="apiResponse.length > 0" class="mt-8">
+  <div v-if="apiResponse.length > 0 && selectedEvent !== '查詢特定車種當年度在特定地區發生事故的死亡率'" class="mt-8">
     <h2 class="text-2xl font-bold mb-4">查詢結果</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="item in apiResponse" :key="item._id" class="p-4 border rounded shadow">
         <div v-for="(value, key) in item" :key="key">
           <p><strong>{{ key }}:</strong> {{ value }}</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 顯示 "查詢特定車種當年度在特定地區發生事故的死亡率" API 的查詢結果 -->
+  <div v-if="selectedEvent === '查詢特定車種當年度在特定地區發生事故的死亡率' && mortalityRateResponse" class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">查詢特定車種當年度在特定地區發生事故的死亡率</h2>
+    <div class="p-4 border rounded shadow">
+      <div v-for="(value, key) in mortalityRateResponse" :key="key">
+        <p><strong>{{ key }}:</strong> {{ value }}</p>
       </div>
     </div>
   </div>
