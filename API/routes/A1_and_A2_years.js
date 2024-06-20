@@ -89,7 +89,7 @@ router.get("/id/:id", async (req, res) => {
     }
 });
 
-// 聚合查詢特定區域的資料_聚合練習1
+// 聚合_112年_特定區域_資料_聚合練習_1
 router.get("/aggregate_1", async (req, res) => {
     try {
         // 執行聚合查詢
@@ -126,7 +126,7 @@ router.get("/aggregate_1", async (req, res) => {
     }
 });
 
-// 聚合查詢特定區域的資料_聚合練習2
+// 聚合_112年_特定區域_資料_聚合練習_2
 router.get("/aggregate_2", async (req, res) => {
     try {
         // 執行聚合查詢
@@ -182,7 +182,7 @@ router.get("/aggregate_2", async (req, res) => {
     }
 });
 
-// 聚合查詢特定區域的資料_聚合練習3
+// 聚合_112年_特定區域_資料_聚合練習_3
 router.get("/aggregate_3", async (req, res) => {
     try {
         // 執行聚合查詢
@@ -235,7 +235,7 @@ router.get("/aggregate_3", async (req, res) => {
     }
 });
 
-// 查詢並排序在特定年份特定地區的總受傷人數+總死亡人數(sideproject_1)
+// 查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數(sideproject_1)
 router.get("/sum/year/:year/region/:region", async (req, res) => {
     // 獲取請求參數中的region
     const region = req.params.region;
@@ -301,7 +301,7 @@ router.get("/sum/year/:year/region/:region", async (req, res) => {
     }
 });
 
-// 查詢並排序在特定年份特定地區特定月份的總受傷人數+總死亡人數(sideproject_2)
+// 查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數(sideproject_2)
 router.get("/sum/year/:year/region/:region/month/:month", async (req, res) => {
     // 獲取請求參數中的region
     const region = req.params.region;
@@ -362,7 +362,7 @@ router.get("/sum/year/:year/region/:region/month/:month", async (req, res) => {
     }
 });
 
-// 查詢並排序在特定年份特定地區平均每個月受傷人數+死亡人數(sideproject_3)
+// 查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數(sideproject_3)
 router.get("/avg/year/:year/region/:region", async (req, res) => {
     const region = req.params.region;
     const year = parseInt(req.params.year);
@@ -423,7 +423,7 @@ router.get("/avg/year/:year/region/:region", async (req, res) => {
     }
 });
 
-// 查詢並排序在特定年份特定車種發生事故最多的地區及月份(sideproject_4)
+// 查詢_排序_特定年度_特定車種_發生事故_地區_月份(sideproject_4)
 router.get("/sum/year/:year/vehicle/:vehicleType", async (req, res) => {
     const vehicleType = req.params.vehicleType;
     const year = parseInt(req.params.year);
@@ -482,7 +482,7 @@ router.get("/sum/year/:year/vehicle/:vehicleType", async (req, res) => {
     }
 });
 
-// 查詢並排序在特定年份特定車種發生事故的特定地區(sideproject_5)
+// 查詢_排序_特定年度_特定車種_發生事故_特定地區(sideproject_5)
 router.get("/sum/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
     const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;
@@ -541,7 +541,7 @@ router.get("/sum/year/:year/vehicle/:vehicleType/region/:region", async (req, re
     }
 });
 
-// 查詢在特定年份特定車種發生事故的特定地區及特定月份(sideproject_6)
+// 查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率(sideproject_6)
 router.get("/mortality_rate/year/:year/month/:month/vehicle/:vehicleType/region/:region", async (req, res) => {
     const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;
@@ -614,7 +614,7 @@ router.get("/mortality_rate/year/:year/month/:month/vehicle/:vehicleType/region/
     }
 });
 
-// 查詢在特定年份特定車種在特定年份發生事故的整體相對死亡率(sideproject_7)
+// 查詢_特定年度_特定車種__特定地區_發生事故_死亡率(sideproject_7)
 router.get("/mortality_rate/year/:year/vehicle/:vehicleType/region/:region", async (req, res) => {
     const year = parseInt(req.params.year);
     const vehicleType = req.params.vehicleType;

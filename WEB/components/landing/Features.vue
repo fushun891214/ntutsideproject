@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 // 選擇的事件類型變量
-const selectedEvent = ref('112年特定區域的資料_聚合練習1'); // 預設選擇112年特定區域的資料_聚合練習1
+const selectedEvent = ref('聚合_112年_特定區域_資料_聚合練習_1'); // 預設選擇聚合_112年_特定區域_資料_聚合練習_1
 // 控制是否禁用選擇框的變量
 const isDisabledYear = ref(true);
 const isDisabledMonth = ref(false);
@@ -21,24 +21,24 @@ const selectedVehicle = ref('');
 
 // 更新選擇框禁用狀態的函數
 function updateDisabledState() {
-  isDisabledYear.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
-                         selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
-                         selectedEvent.value === '112年特定區域的資料_聚合練習3';
+  isDisabledYear.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+                         selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
+                         selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3';
 
-  isDisabledMonth.value = selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數' || 
-                          selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數' ||
-                          selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份' ||
-                          selectedEvent.value === '查詢並排序在特定年份特定車種發生事故的特定地區' ||
-                          selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率';
+  isDisabledMonth.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數' || 
+                          selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數' ||
+                          selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份' ||
+                          selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區' ||
+                          selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率';
 
-  isDisabledRegion.value = selectedEvent.value === '112年特定區域的資料_聚合練習1' ||
-                           selectedEvent.value === '112年特定區域的資料_聚合練習2' ||
-                           selectedEvent.value === '112年特定區域的資料_聚合練習3' ||
-                           selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份';
+  isDisabledRegion.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+                           selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
+                           selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3' ||
+                           selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份';
 
-  isDisabledVehicle.value = selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數'|| 
-                          selectedEvent.value === '查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數' ||
-                          selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數';
+  isDisabledVehicle.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數'|| 
+                          selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數' ||
+                          selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數';
 
   console.log('Update Disabled State: ', isDisabledYear.value, isDisabledMonth.value, isDisabledRegion.value, isDisabledVehicle.value);
 }
@@ -49,31 +49,31 @@ async function fetchApiData() {
   let apiUrl = '';
   mortalityRateResponse.value = null; // 重置變數
   
-  if (selectedEvent.value === '112年特定區域的資料_聚合練習1') {
+  if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_1';
-  } else if (selectedEvent.value === '112年特定區域的資料_聚合練習2') {
+  } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_2';
-  } else if (selectedEvent.value === '112年特定區域的資料_聚合練習3') {
+  } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_3';
-  } else if (selectedEvent.value === '查詢並排序在特定年度特定地區的受傷人數+總死亡人數') {
+  } else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
-  else if (selectedEvent.value === '查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數') {
+  else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
   }
-  else if (selectedEvent.value === '查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數') {
+  else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
-  else if (selectedEvent.value === '查詢並排序在特定年份特定車種發生事故最多的地區及月份') {
+  else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
   }
-  else if (selectedEvent.value === '查詢並排序在特定年份特定車種發生事故的特定地區') {
+  else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
-  else if (selectedEvent.value === '查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率') {
+  else if (selectedEvent.value === '查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
-  else if (selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率') {
+  else if (selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率') {
     apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
 
@@ -82,7 +82,7 @@ async function fetchApiData() {
       console.log('Fetching data...'); // 確認進入到if分支
       const response = await axios.get(apiUrl);
       console.log('API Response:', response.data); // 檢查 API 回應
-      if (selectedEvent.value === '查詢特定車種當年度在特定地區發生事故的死亡率') {
+      if (selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率') {
         mortalityRateResponse.value = response.data; // 更新特定API的結果
       } else {
         apiResponse.value = response.data;
@@ -113,16 +113,16 @@ onMounted(() => {
     <div class="mt-4 flex space-x-4"> <!-- 使用 Flexbox 佈局，並添加間距 -->
       <select class="p-2 border rounded" v-model="selectedEvent" @change="updateDisabledState">
         <option value="">查詢事件</option>
-        <option value="112年特定區域的資料_聚合練習1">112年特定區域的資料_聚合練習1</option>
-        <option value="112年特定區域的資料_聚合練習2">112年特定區域的資料_聚合練習2</option>
-        <option value="112年特定區域的資料_聚合練習3">112年特定區域的資料_聚合練習3</option>
-        <option value="查詢並排序在特定年度特定地區的受傷人數+總死亡人數">查詢並排序在特定年度特定地區的受傷人數+總死亡人數</option>
-        <option value="查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數">查詢並排序在特定年度特定地區特定月份的受傷人數+總死亡人數</option>
-        <option value="查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數">查詢並排序在特定年度特定地區平均每個月受傷人數+死亡人數</option>
-        <option value="查詢並排序在特定年份特定車種發生事故最多的地區及月份">查詢並排序在特定年份特定車種發生事故最多的地區及月份</option>
-        <option value="查詢並排序在特定年份特定車種發生事故的特定地區">查詢並排序在特定年份特定車種發生事故的特定地區</option>
-        <option value="查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率">查詢在特定年份特定車種發生事故的特定地區及特定月份及死亡率</option>
-        <option value="查詢特定車種當年度在特定地區發生事故的死亡率">查詢特定車種當年度在特定地區發生事故的死亡率</option>
+        <option value="聚合_112年_特定區域_資料_聚合練習_1">聚合_112年_特定區域_資料_聚合練習_1</option>
+        <option value="聚合_112年_特定區域_資料_聚合練習_2">聚合_112年_特定區域_資料_聚合練習_2</option>
+        <option value="聚合_112年_特定區域_資料_聚合練習_3">聚合_112年_特定區域_資料_聚合練習_3</option>
+        <option value="查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數">查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數</option>
+        <option value="查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數">查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數</option>
+        <option value="查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數">查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數</option>
+        <option value="查詢_排序_特定年度_特定車種_發生事故_地區_月份">查詢_排序_特定年度_特定車種_發生事故_地區_月份</option>
+        <option value="查詢_排序_特定年度_特定車種_發生事故_特定地區">查詢_排序_特定年度_特定車種_發生事故_特定地區</option>
+        <option value="查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率">查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率</option>
+        <option value="查詢_特定年度_特定車種__特定地區_發生事故_死亡率">查詢_特定年度_特定車種__特定地區_發生事故_死亡率</option>
       </select>
       <select class="p-2 border rounded" v-model="selectedYear" :disabled="isDisabledYear">
         <option value="">發生年度</option>
@@ -246,7 +246,7 @@ onMounted(() => {
   </div>
 
   <!-- 顯示API查詢結果 -->
-  <div v-if="apiResponse.length > 0 && selectedEvent !== '查詢特定車種當年度在特定地區發生事故的死亡率'" class="mt-8">
+  <div v-if="apiResponse.length > 0 && selectedEvent !== '查詢_特定年度_特定車種__特定地區_發生事故_死亡率'" class="mt-8">
     <h2 class="text-2xl font-bold mb-4">查詢結果</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="item in apiResponse" :key="item._id" class="p-4 border rounded shadow">
@@ -257,9 +257,9 @@ onMounted(() => {
     </div>
   </div>
 
-  <!-- 顯示 "查詢特定車種當年度在特定地區發生事故的死亡率" API 的查詢結果 -->
-  <div v-if="selectedEvent === '查詢特定車種當年度在特定地區發生事故的死亡率' && mortalityRateResponse" class="mt-8">
-    <h2 class="text-2xl font-bold mb-4">查詢特定車種當年度在特定地區發生事故的死亡率</h2>
+  <!-- 顯示 "查詢_特定年度_特定車種__特定地區_發生事故_死亡率" API 的查詢結果 -->
+  <div v-if="selectedEvent === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率' && mortalityRateResponse" class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">查詢_特定年度_特定車種__特定地區_發生事故_死亡率</h2>
     <div class="p-4 border rounded shadow">
       <div v-for="(value, key) in mortalityRateResponse" :key="key">
         <p><strong>{{ key }}:</strong> {{ value }}</p>
