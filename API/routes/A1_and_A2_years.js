@@ -2,6 +2,8 @@
 const express = require("express");
 // 創建一個路由對象，用於定義路由
 const router = express.Router();
+// 导入 validationResult 和 check
+const { check, validationResult } = require('express-validator'); 
 
 // 引入各個模型
 const A1A2_aggregate_1 = require('../models/A1_and_A2_years_aggregate_1'); // 引入模型
@@ -14,10 +16,13 @@ const A1A2_sideproject_4 = require('../models/A1_and_A2_years_sideproject_4'); /
 const A1A2_sideproject_5 = require('../models/A1_and_A2_years_sideproject_5'); // 引入模型
 const A1A2_sideproject_6 = require('../models/A1_and_A2_years_sideproject_6'); // 引入模型
 const A1A2_sideproject_7 = require('../models/A1_and_A2_years_sideproject_7'); // 引入模型
-const A1A2_detailed = require('../models/A1_and_A2_112_year_detailed'); // 引入模型
+const A1A2_detailed = require('../models/A1_and_A2_years_detailed'); // 引入模型
+const A1A2_add = require('../models/A1_and_A2_years_add'); // 引入模型
+const A1A2_update = require('../models/A1_and_A2_years_update'); // 引入模型
+const A1A2_delete = require('../models/A1_and_A2_years_delete'); // 引入模型
 
 // 查詢特定ID的資料
-router.get("/id/:id", async (req, res) => {
+router.get("/detailed/id/:id", async (req, res) => {
     // 獲取請求參數中的id
     const id = req.params.id;
     console.log(`Received request for id: ${id}`); // 日誌輸出
@@ -33,53 +38,11 @@ router.get("/id/:id", async (req, res) => {
             "_id": result._id,
             "發生年度": result.發生年度,
             "發生月": result.發生月,
-            "發生日": result.發生日,
-            "發生時-Hours": result["發生時-Hours"],
-            "發生分": result.發生分,
-            "處理別-編號": result["處理別-編號"],
             "區序": result.區序,
-            "肇事地點": result.肇事地點,
             "死亡人數": result.死亡人數,
             "2-30日死亡人數": result["2-30日死亡人數"],
             "受傷人數": result.受傷人數,
-            "當事人序號": result.當事人序號,
             "車種": result.車種,
-            "天候": result.天候,
-            "光線": result.光線,
-            "道路類別": result.道路類別,
-            "速限-速度限制": result["速限-速度限制"],
-            "道路型態": result.道路型態,
-            "事故位置": result.事故位置,
-            "路面狀況1": result.路面狀況1,
-            "路面狀況2": result.路面狀況2,
-            "路面狀況3": result.路面狀況3,
-            "道路障礙1": result.道路障礙1,
-            "道路障礙2": result.道路障礙2,
-            "號誌1": result.號誌1,
-            "號誌2": result.號誌2,
-            "車道劃分-分向": result["車道劃分-分向"],
-            "車道劃分-分道1": result["車道劃分-分道1"],
-            "車道劃分-分道2": result["車道劃分-分道2"],
-            "車道劃分-分道3": result["車道劃分-分道3"],
-            "事故類型及型態": result.事故類型及型態,
-            "性別": result.性別,
-            "年齡": result.年齡,
-            "受傷程度": result.受傷程度,
-            "主要傷處": result.主要傷處,
-            "保護裝置": result.保護裝置,
-            "行動電話": result.行動電話,
-            "車輛用途": result.車輛用途,
-            "當事者行動狀態": result.當事者行動狀態,
-            "駕駛資格情形": result.駕駛資格情形,
-            "駕駛執照種類": result.駕駛執照種類,
-            "飲酒情形": result.飲酒情形,
-            "車輛撞擊部位1": result.車輛撞擊部位1,
-            "肇因碼-個別": result["肇因碼-個別"],
-            "個人肇逃否": result.個人肇逃否,
-            "職業": result.職業,
-            "旅次目的": result.旅次目的,
-            "座標-X": result["座標-X"],
-            "座標-Y": result["座標-Y"]
         };
         // 返回查詢結果
         res.json(formattedResult);
@@ -88,6 +51,83 @@ router.get("/id/:id", async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+// 新增資料並產生隨機ID
+router.post("/add", async (req, res) => {
+    const crypto = require('crypto');
+    // 從請求的body中獲取資料
+    const { 發生年度, 發生月, 區序, 死亡人數, "2-30日死亡人數": 二至三十日死亡人數, 受傷人數, 車種 } = req.body;
+    // 生成隨機ID
+    const id = crypto.randomBytes(12).toString('hex');
+    console.log(`Generated ID: ${id}`); // 日誌輸出
+
+    // 創建新數據對象
+    const newData = new A1A2_add({
+        _id: id,
+        發生年度: 發生年度,
+        發生月: 發生月,
+        區序: 區序,
+        死亡人數: 死亡人數,
+        "2-30日死亡人數": 二至三十日死亡人數,
+        受傷人數: 受傷人數,
+        車種: 車種
+    });
+
+    try {
+        // 保存新數據
+        const result = await newData.save();
+        // 返回保存結果
+        res.status(201).json(result);
+    } catch (err) {
+        console.error(`Error saving document: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 查詢特定ID的資料並刪除其ID
+router.delete("/delete/id/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log(`Received request to delete id: ${id}`); // 日誌輸出
+
+    try {
+        // 查找指定id的文檔
+        const result = await A1A2_delete.findByIdAndDelete(id);
+        if (!result) {
+            // 如果找不到資料，返回404錯誤
+            return res.status(404).json({ message: 'No data found for the specified id' });
+        }
+        // 返回刪除結果
+        res.json({ message: 'Document deleted successfully', data: result });
+    } catch (err) {
+        console.error(`Error deleting document: ${err.message}`); // 日誌輸出
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// 更新特定ID的資料
+router.put("/update/id/:id", 
+    async (req, res) => {
+        const id = req.params.id;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            // 查找並更新指定id的文檔
+            const result = await A1A2_update.findByIdAndUpdate(id, req.body, { new: true });
+            if (!result) {
+                // 如果找不到資料，返回404錯誤
+                return res.status(404).json({ message: 'No data found for the specified id' });
+            }
+            // 返回更新結果
+            res.json(result);
+        } catch (err) {
+            console.error(`Error updating document: ${err.message}`); // 日誌輸出
+            res.status(500).json({ message: err.message });
+        }
+    }
+);
 
 // 聚合_112年_特定區域_資料_聚合練習_1
 router.get("/aggregate_1", async (req, res) => {

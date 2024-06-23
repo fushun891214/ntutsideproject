@@ -919,7 +919,7 @@ function createServerHead(options = {}) {
 
 const unheadPlugins = [];
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"你的網站描述"}],"link":[{"rel":"icon","type":"image/png","href":"static/png-clipart-data-communications-computer-networks-and-open-systems-data-transmission-computer-blue-computer-network-thumbnail.png"}],"style":[],"script":[],"noscript":[],"title":"交通事故分析系統"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"你的網站描述"}],"link":[{"rel":"icon","type":"image/png","href":"/Taipei-Tech-Logo.png"}],"style":[],"script":[],"noscript":[],"title":"交通事故分析系統"};
 
 const appRootId = "__nuxt";
 

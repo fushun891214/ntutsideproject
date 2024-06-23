@@ -29,22 +29,42 @@
       </p>
       <!-- 按鈕連結 -->
       <div class="mt-6 flex flex-col sm:flex-row gap-3">
-        <!-- 開始使用按鈕 -->
-        <!-- <LandingLink
-          href="https://github.com/Gr33nW33n/nuxtship-template"
+        <!-- 新增按鈕 -->
+        <LandingLink
+          size="lg"
+          styleName="outline"
+          href="add"
           target="_blank"
           rel="noopener"
-          >Get Started</LandingLink
-        > -->
-        <!-- 查看倉庫按鈕 -->
-        <!-- <LandingLink
+          >新增</LandingLink
+        >
+        <!-- 刪除按鈕 -->
+        <LandingLink
           size="lg"
           styleName="outline"
           rel="noopener"
-          href="https://github.com/Gr33nW33n/nuxtship-template"
+          href="delete"
           target="_blank"
-          >View Repo</LandingLink
-        > -->
+          >刪除</LandingLink
+        >
+        <!-- 更新按鈕 -->
+        <LandingLink
+          size="lg"
+          styleName="outline"
+          rel="noopener"
+          href="update"
+          target="_blank"
+          >更新</LandingLink
+        >
+        <!-- 查詢按鈕 -->
+        <LandingLink
+          size="lg"
+          styleName="outline"
+          rel="noopener"
+          href="/"
+          target="_blank"
+          >查詢</LandingLink
+        >
       </div>
     </div>
   </main>

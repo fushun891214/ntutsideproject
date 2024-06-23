@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   build: {
     transpile: ['@chenfengyuan/vue-carousel', '@iconify/vue'],
@@ -12,7 +13,6 @@ export default defineNuxtConfig({
     },
   },
   modules: ["nuxt-icon"],
-  
   // 模塊配置
   // 應用程序配置
   app: {
@@ -32,7 +32,11 @@ export default defineNuxtConfig({
       // 設置 link 標籤
       link: [
         // 設置 favicon 圖標
-        { rel: 'icon', type: 'image/png', href: 'static/png-clipart-data-communications-computer-networks-and-open-systems-data-transmission-computer-blue-computer-network-thumbnail.png' } // 更改favicon圖標
+        { 
+          rel: 'icon', 
+          type: 'image/png', 
+          href: '/Taipei-Tech-Logo.png' 
+        } // 更改favicon圖標
       ]
     }
   }

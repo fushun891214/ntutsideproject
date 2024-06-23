@@ -3,12 +3,13 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 // 選擇的事件類型變量
-const selectedEvent = ref('聚合_112年_特定區域_資料_聚合練習_1'); // 預設選擇聚合_112年_特定區域_資料_聚合練習_1
+const selectedEvent = ref(''); // 預設選擇查詢_特定ID_資料
 // 控制是否禁用選擇框的變量
 const isDisabledYear = ref(true);
-const isDisabledMonth = ref(false);
+const isDisabledMonth = ref(true);
 const isDisabledRegion = ref(true);
-const isDisabledVehicle = ref(false);
+const isDisabledVehicle = ref(true);
+const isDisabledID = ref(false); // 新增變量來控制ID文字方塊的禁用狀態
 // API返回的數據變量
 const apiResponse = ref([]);
 const mortalityRateResponse = ref(null); // 新增變數來存儲特定API的結果
@@ -18,38 +19,58 @@ const selectedYear = ref('');
 const selectedMonth = ref('');
 const selectedRegion = ref('');
 const selectedVehicle = ref('');
+const id = ref(''); // 新增變量來存儲使用者輸入的ID
 
-// 更新選擇框禁用狀態的函數
 function updateDisabledState() {
-  isDisabledYear.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
-                         selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
-                         selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3';
+  // 清空先前的查詢結果
+  apiResponse.value = [];
+  mortalityRateResponse.value = null;
 
-  isDisabledMonth.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數' || 
-                          selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數' ||
-                          selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份' ||
-                          selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區' ||
-                          selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率';
-
-  isDisabledRegion.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+  if (selectedEvent.value === '查詢_特定ID_資料') {
+    isDisabledID.value = false;
+    isDisabledYear.value = true;
+    isDisabledMonth.value = true;
+    isDisabledRegion.value = true;
+    isDisabledVehicle.value = true;
+  } else {
+    isDisabledID.value = true;
+    isDisabledYear.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
                            selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
-                           selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3' ||
-                           selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份';
+                           selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3';
 
-  isDisabledVehicle.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數'|| 
-                          selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數' ||
-                          selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數';
+    isDisabledMonth.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數' || 
+                            selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數' ||
+                            selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份' ||
+                            selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區' ||
+                            selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率' ||
+                            selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+                            selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
+                            selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3';
 
-  console.log('Update Disabled State: ', isDisabledYear.value, isDisabledMonth.value, isDisabledRegion.value, isDisabledVehicle.value);
+    isDisabledRegion.value = selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+                             selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
+                             selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3' ||
+                             selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份';
+
+    isDisabledVehicle.value = selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數' || 
+                              selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數' ||
+                              selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數' ||
+                              selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1' ||
+                              selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2' ||
+                              selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3';
+  }
+
+  console.log('Update Disabled State: ', isDisabledYear.value, isDisabledMonth.value, isDisabledRegion.value, isDisabledVehicle.value, isDisabledID.value);
 }
 
-// 發送API請求並處理響應的函數
 async function fetchApiData() {
   console.log('fetchApiData function called'); // 確認函數被調用
   let apiUrl = '';
   mortalityRateResponse.value = null; // 重置變數
   
-  if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1') {
+  if (selectedEvent.value === '查詢_特定ID_資料') {
+    apiUrl = `http://localhost:5000/A1_and_A2_years/detailed/id/${id.value}`;
+  } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_1';
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2') {
     apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_2';
@@ -84,21 +105,29 @@ async function fetchApiData() {
       console.log('API Response:', response.data); // 檢查 API 回應
       if (selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率') {
         mortalityRateResponse.value = response.data; // 更新特定API的結果
+      } else if (selectedEvent.value === '查詢_特定ID_資料') {
+        if (!response.data || Object.keys(response.data).length === 0) {
+          alert('查無該筆資料');
+        } else {
+          apiResponse.value = [response.data]; // 將返回的對象包裝在一個數組中
+        }
       } else {
         apiResponse.value = response.data;
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      alert('查詢過程中發生錯誤');
     }
   } else {
     console.log('Selected event does not match'); // 確認選擇事件是否匹配
   }
 }
 
-// 頁面加載時調用fetchApiData函數
-onMounted(() => {
-  fetchApiData();
-});
+// // 頁面加載時調用fetchApiData函數
+// onMounted(() => {
+//   fetchApiData();
+// });
+
 </script>
 
 <template>
@@ -113,6 +142,7 @@ onMounted(() => {
     <div class="mt-4 flex space-x-4"> <!-- 使用 Flexbox 佈局，並添加間距 -->
       <select class="p-2 border rounded" v-model="selectedEvent" @change="updateDisabledState">
         <option value="">查詢事件</option>
+        <option value="查詢_特定ID_資料">查詢_特定ID_資料</option>
         <option value="聚合_112年_特定區域_資料_聚合練習_1">聚合_112年_特定區域_資料_聚合練習_1</option>
         <option value="聚合_112年_特定區域_資料_聚合練習_2">聚合_112年_特定區域_資料_聚合練習_2</option>
         <option value="聚合_112年_特定區域_資料_聚合練習_3">聚合_112年_特定區域_資料_聚合練習_3</option>
@@ -124,6 +154,7 @@ onMounted(() => {
         <option value="查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率">查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率</option>
         <option value="查詢_特定年度_特定車種__特定地區_發生事故_死亡率">查詢_特定年度_特定車種__特定地區_發生事故_死亡率</option>
       </select>
+      <input v-model="id" class="p-2 border rounded" type="text" placeholder="特定資料ID" :disabled="isDisabledID" />
       <select class="p-2 border rounded" v-model="selectedYear" :disabled="isDisabledYear">
         <option value="">發生年度</option>
         <option value="112">112</option>
@@ -246,7 +277,7 @@ onMounted(() => {
   </div>
 
   <!-- 顯示API查詢結果 -->
-  <div v-if="apiResponse.length > 0 && selectedEvent !== '查詢_特定年度_特定車種__特定地區_發生事故_死亡率'" class="mt-8">
+  <div v-if="apiResponse.length > 0 && selectedEvent !== '查詢_特定年度_特定車種__特定地區_發生事故_死亡率' && selectedEvent !== '查詢_特定ID_資料'" class="mt-8">
     <h2 class="text-2xl font-bold mb-4">查詢結果</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="item in apiResponse" :key="item._id" class="p-4 border rounded shadow">
@@ -259,9 +290,19 @@ onMounted(() => {
 
   <!-- 顯示 "查詢_特定年度_特定車種__特定地區_發生事故_死亡率" API 的查詢結果 -->
   <div v-if="selectedEvent === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率' && mortalityRateResponse" class="mt-8">
-    <h2 class="text-2xl font-bold mb-4">查詢_特定年度_特定車種__特定地區_發生事故_死亡率</h2>
+    <h2 class="text-2xl font-bold mb-4">查詢結果</h2>
     <div class="p-4 border rounded shadow">
       <div v-for="(value, key) in mortalityRateResponse" :key="key">
+        <p><strong>{{ key }}:</strong> {{ value }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 顯示 "查詢_特定ID_資料" API 的查詢結果 -->
+  <div v-if="selectedEvent === '查詢_特定ID_資料' && apiResponse.length === 1" class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">查詢_結果</h2>
+    <div class="p-4 border rounded shadow">
+      <div v-for="(value, key) in apiResponse[0]" :key="key">
         <p><strong>{{ key }}:</strong> {{ value }}</p>
       </div>
     </div>
