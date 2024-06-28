@@ -30,7 +30,7 @@ async function addData() {
     apiResponse.value = response.data;
   } catch (error) {
     console.error('Error adding data:', error);
-    alert('新增數據失敗');
+    alert('新增資料失敗');
   }
 }
 </script>

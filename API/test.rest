@@ -1,5 +1,5 @@
 ### 查詢特定ID的資料
-GET http://localhost:5000/A1_and_A2_years/detailed/id/fd788bebf057fd0411277107
+GET http://localhost:5000/A1_and_A2_years/detailed/id/f16e009445373e88ffe1cddb
 Content-Type: application/json
 
 ### 新增資料並產生隨機ID
@@ -7,11 +7,11 @@ POST  http://localhost:5000/A1_and_A2_years/add
 Content-Type: application/json
 
 ### 查詢特定ID的資料並刪除其ID
-DELETE   http://localhost:5000/A1_and_A2_years/delete/id/cecc41053ec296efe1381012
+DELETE   http://localhost:5000/A1_and_A2_years/delete/id/f16e009445373e88ffe1cddb
 Content-Type: application/json
 
 ### 更新特定ID的資料
-PUT   http://localhost:5000/A1_and_A2_years/update/id/ef1b4921f937110dd9b0e722
+PUT   http://localhost:5000/A1_and_A2_years/update/id/f16e009445373e88ffe1c1ddb
 Content-Type: application/json
 
 ### 聚合_112年_特定區域_資料_聚合練習_1

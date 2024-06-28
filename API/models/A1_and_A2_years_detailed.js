@@ -12,4 +12,5 @@ const A1_and_A2_years_detailed_Schema = new mongoose.Schema({
 });
 
 // 將 Schema 轉換為 Model 並指定集合名稱
-module.exports = mongoose.model('A1_and_A2_years_detailed', A1_and_A2_years_detailed_Schema, 'A1_and_A2_years');
+module.exports = mongoose.model
+('A1_and_A2_years_detailed', A1_and_A2_years_detailed_Schema, 'A1_and_A2_years');

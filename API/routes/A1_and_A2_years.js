@@ -2,7 +2,7 @@
 const express = require("express");
 // 創建一個路由對象，用於定義路由
 const router = express.Router();
-// 导入 validationResult 和 check
+// 導入 validationResult 和 check
 const { check, validationResult } = require('express-validator'); 
 
 // 引入各個模型
@@ -21,19 +21,22 @@ const A1A2_add = require('../models/A1_and_A2_years_add'); // 引入模型
 const A1A2_update = require('../models/A1_and_A2_years_update'); // 引入模型
 const A1A2_delete = require('../models/A1_and_A2_years_delete'); // 引入模型
 
-// 查詢特定ID的資料
+// 定義查詢特定ID資料的路由
 router.get("/detailed/id/:id", async (req, res) => {
-    // 獲取請求參數中的id
+    // 從請求參數中獲取id
     const id = req.params.id;
-    console.log(`Received request for id: ${id}`); // 日誌輸出
+    console.log(`Received request for id: ${id}`); // 輸出日誌，記錄收到的請求ID
+
     try {
-        // 查找指定id的文檔
+        // 查找資料庫中指定id的文檔
         const result = await A1A2_detailed.findById(id);
+
+        // 如果找不到指定ID的文檔，返回404錯誤
         if (!result) {
-            // 如果找不到資料，返回404錯誤
             return res.status(404).json({ message: 'No data found for the specified id' });
         }
-        // 格式化結果
+
+        // 格式化查詢結果
         const formattedResult = {
             "_id": result._id,
             "發生年度": result.發生年度,
@@ -44,10 +47,12 @@ router.get("/detailed/id/:id", async (req, res) => {
             "受傷人數": result.受傷人數,
             "車種": result.車種,
         };
-        // 返回查詢結果
+
+        // 返回格式化後的查詢結果
         res.json(formattedResult);
     } catch (err) {
-        console.error(`Error finding document: ${err.message}`); // 日誌輸出
+        // 如果查詢過程中出現錯誤，輸出錯誤日誌，並返回500錯誤
+        console.error(`Error finding document: ${err.message}`); // 輸出錯誤日誌
         res.status(500).json({ message: err.message });
     }
 });
@@ -61,7 +66,7 @@ router.post("/add", async (req, res) => {
     const id = crypto.randomBytes(12).toString('hex');
     console.log(`Generated ID: ${id}`); // 日誌輸出
 
-    // 創建新數據對象
+    // 創建新資料對象
     const newData = new A1A2_add({
         _id: id,
         發生年度: 發生年度,
@@ -74,7 +79,7 @@ router.post("/add", async (req, res) => {
     });
 
     try {
-        // 保存新數據
+        // 保存新資料
         const result = await newData.save();
         // 返回保存結果
         res.status(201).json(result);
