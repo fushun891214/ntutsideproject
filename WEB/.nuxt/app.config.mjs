@@ -15,6 +15,6 @@ if (import.meta.hot) {
   })
 }
 
-import cfg0 from "C:/Users/fushu/Desktop/北科碩班/ntutsideproject/WEB/app.config.ts"
+import cfg0 from "/Users/fushun/Desktop/ntutsideproject/WEB/app.config.ts"
 
 export default /*@__PURE__*/ defuFn(cfg0, inlineConfig)

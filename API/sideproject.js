@@ -13,9 +13,23 @@ const app = express();
 // 使用cors中間件來允許所有來源的跨域請求
 app.use(cors());
 
+// 判斷是否在Docker容器中運行
+const isDocker = process.env.IS_DOCKER === 'true';
+
+// 設置MongoDB URI
+const localMongoURI = 'mongodb://localhost:27017/taipei_traffic_accident';
+const dockerMongoURI = 'mongodb://mongo:27017/taipei_traffic_accident';
+const mongoURI = isDocker ? dockerMongoURI : localMongoURI;
+
 // 連接到MongoDB
-// 使用mongoose.connect方法連接到MongoDB，指定數據庫URL和選項
-mongoose.connect('mongodb://127.0.0.1:27017/taipei_traffic_accident', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+  });
+
 // 獲取mongoose連接對象
 const db = mongoose.connection;
 // 綁定錯誤事件處理器
@@ -31,8 +45,8 @@ app.use(express.json());
 // 使用自定義的路由模塊，當請求路徑以'/A1_and_A2_years'開頭時，使用A1A2Routes路由處理
 app.use('/A1_and_A2_years', A1A2Routes);
 
-// 設定服務器監聽的端口，優先使用環境變量中的PORT值，否則使用3000端口
-const PORT = process.env.PORT || 5000;
+// 設定服務器監聽的端口，優先使用環境變量中的PORT值，否則使用10000端口
+const PORT = process.env.PORT || 10000;
 // 啟動服務器並開始監聽指定端口，當服務器啟動時輸出一條日誌
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

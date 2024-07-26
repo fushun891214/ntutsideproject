@@ -69,33 +69,33 @@ async function fetchApiData() {
   mortalityRateResponse.value = null; // 重置變數
   
   if (selectedEvent.value === '查詢_特定ID_資料') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/detailed/id/${id.value}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/detailed/id/${id.value}`;
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_1';
+    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_1';
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_2';
+    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_2';
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3') {
-    apiUrl = 'http://localhost:5000/A1_and_A2_years/aggregate_3';
+    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_3';
   } else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率') {
-    apiUrl = `http://localhost:5000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `http://localhost:10000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
 
   if (apiUrl) {

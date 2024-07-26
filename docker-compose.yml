@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  api:
+    build: ./api
+    ports:
+      - "10000:10000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/taipei_traffic_accident
+    depends_on:
+      - mongo
+    networks:
+      - ntutsideproject_network
+
+  web:
+    build: ./web
+    ports:
+      - "3000:3000"
+    networks:
+      - ntutsideproject_network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - ntutsideproject_network
+
+volumes:
+  mongo-data:
+
+networks:
+  ntutsideproject_network:
+    driver: bridge
