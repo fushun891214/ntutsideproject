@@ -174,55 +174,68 @@ router.get("/aggregate_1", async (req, res) => {
 // 聚合_112年_特定區域_資料_聚合練習_2
 router.get("/aggregate_2", async (req, res) => {
     try {
-        // 執行聚合查詢
+        // 执行聚合查询
         const result = await A1A2_aggregate_2.aggregate([
             {
-                $group: 
-                {
-                    _id:
-                    {
-                        月份:"$發生月",
-                        地區:"$區序"
+                $addFields: {
+                    死亡人數: { 
+                        $convert: { 
+                            input: "$死亡人數", 
+                            to: "double", 
+                            onError: 0, 
+                            onNull: 0 
+                        }
                     },
-                    受傷人數: { $sum: "$受傷人數" },
-                    總死亡人數: 
-                    { 
-                        $sum: 
-                        {
-                            $add: 
-                            [
-                                "$死亡人數",
-                                "$2-30日死亡人數"
-                            ]
+                    "2-30日死亡人數": { 
+                        $convert: { 
+                            input: "$2-30日死亡人數", 
+                            to: "double", 
+                            onError: 0, 
+                            onNull: 0 
                         }
                     }
                 }
             },
             {
-                $sort:
-                {
-                    "_id.月份":1,
-                    "_id.地區":1
+                $group: {
+                    _id: {
+                        月份: "$發生月",
+                        地區: "$區序"
+                    },
+                    受傷人數: { $sum: "$受傷人數" },
+                    總死亡人數: { 
+                        $sum: { 
+                            $add: [ "$死亡人數", "$2-30日死亡人數" ]
+                        }
+                    }
+                }
+            },
+            {
+                $sort: {
+                    "_id.月份": 1,
+                    "_id.地區": 1
                 }
             }
         ]);
+
         if (result.length === 0) {
             return res.status(404).json({ message: 'No data found' });
         }
-        // 格式化結果
+
+        // 格式化结果
         const formattedResult = result.map(item => ({
-            "_id": 
-            {
-                "月份":item._id.月份,
-                "地區":item._id.地區
+            "_id": {
+                "月份": item._id.月份,
+                "地區": item._id.地區
             },
             "受傷人數": item.受傷人數,
             "總死亡人數": item.總死亡人數
         }));
-        // 返回聚合結果
+
+        // 返回聚合结果
         res.json(formattedResult);
     } catch (err) {
-        console.error(`Error during aggregation: ${err.message}`); // 日誌輸出
+        console.error(`Error during aggregation: ${err.message}`); // 日志输出
         res.status(500).json({ message: err.message });
     }
 });
@@ -232,6 +245,26 @@ router.get("/aggregate_3", async (req, res) => {
     try {
         // 執行聚合查詢
         const result = await A1A2_aggregate_3.aggregate([
+            {
+                $addFields: {
+                    死亡人數: { 
+                        $convert: { 
+                            input: "$死亡人數", 
+                            to: "double", 
+                            onError: 0, 
+                            onNull: 0 
+                        }
+                    },
+                    "2-30日死亡人數": { 
+                        $convert: { 
+                            input: "$2-30日死亡人數", 
+                            to: "double", 
+                            onError: 0, 
+                            onNull: 0 
+                        }
+                    }
+                }
+            },
             {
                 $group: 
                 {
@@ -269,8 +302,8 @@ router.get("/aggregate_3", async (req, res) => {
         const formattedResult = result.map(item => ({
             "受傷人數": item.受傷人數,
             "總死亡人數": item.總死亡人數,
-            "地區":item._id.地區,
-            "月份":item._id.月份
+            "地區": item._id.地區,
+            "月份": item._id.月份
         }));
         // 返回聚合結果
         res.json(formattedResult);

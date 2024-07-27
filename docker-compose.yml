@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.0'
 services:
   api:
     build: ./api
@@ -6,6 +6,7 @@ services:
       - "10000:10000"
     environment:
       - MONGODB_URI=mongodb://mongo:27017/taipei_traffic_accident
+      - IS_DOCKER=true
     depends_on:
       - mongo
     networks:

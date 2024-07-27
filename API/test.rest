@@ -1,50 +1,50 @@
 ### 查詢特定ID的資料
-GET http://localhost:5000/A1_and_A2_years/detailed/id/f16e009445373e88ffe1cddb
+GET http://localhost:10000/A1_and_A2_years/detailed/id/f16e009445373e88ffe1cddb
 Content-Type: application/json
 
 ### 新增資料並產生隨機ID
-POST  http://localhost:5000/A1_and_A2_years/add
+POST  http://localhost:10000/A1_and_A2_years/add
 Content-Type: application/json
 
 ### 查詢特定ID的資料並刪除其ID
-DELETE   http://localhost:5000/A1_and_A2_years/delete/id/f16e009445373e88ffe1cddb
+DELETE   http://localhost:10000/A1_and_A2_years/delete/id/f16e009445373e88ffe1cddb
 Content-Type: application/json
 
 ### 更新特定ID的資料
-PUT   http://localhost:5000/A1_and_A2_years/update/id/f16e009445373e88ffe1c1ddb
+PUT   http://localhost:10000/A1_and_A2_years/update/id/f16e009445373e88ffe1c1ddb
 Content-Type: application/json
 
 ### 聚合_112年_特定區域_資料_聚合練習_1
-GET http://localhost:5000/A1_and_A2_years/aggregate_1
+GET http://localhost:10000/A1_and_A2_years/aggregate_1
 Content-Type: application/json
 
 ### 聚合_112年_特定區域_資料_聚合練習_2
-GET http://localhost:5000/A1_and_A2_years/aggregate_2
+GET http://localhost:10000/A1_and_A2_years/aggregate_2
 Content-Type: application/json
 
 ### 聚合_112年_特定區域_資料_聚合練習_3
-GET http://localhost:5000/A1_and_A2_years/aggregate_3
+GET http://localhost:10000/A1_and_A2_years/aggregate_3
 Content-Type: application/json
 
 ### 查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數(sideproject_1)
-GET http://localhost:5000/A1_and_A2_years/sum/year/111/region/05中正區
+GET http://localhost:10000/A1_and_A2_years/sum/year/111/region/05中正區
 Content-Type: application/json
 
 ### 查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數(sideproject_2)
-GET http://localhost:5000/A1_and_A2_years/sum/year/111/region/05中正區/month/10
+GET http://localhost:10000/A1_and_A2_years/sum/year/111/region/05中正區/month/10
 Content-Type: application/json
 
 ### 查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數(sideproject_3)
-GET http://localhost:5000/A1_and_A2_years/avg/year/110/region/03中山區
+GET http://localhost:10000/A1_and_A2_years/avg/year/110/region/03中山區
 
 ### 查詢_排序_特定年度_特定車種_發生事故_地區_月份(sideproject_4)
-GET http://localhost:5000/A1_and_A2_years/sum/year/111/vehicle/C03
+GET http://localhost:10000/A1_and_A2_years/sum/year/111/vehicle/C03
 
 ### 查詢_排序_特定年度_特定車種_發生事故_特定地區(sideproject_5)
-GET http://localhost:5000/A1_and_A2_years/sum/year/111/vehicle/C03/region/03中山區 
+GET http://localhost:10000/A1_and_A2_years/sum/year/111/vehicle/C03/region/03中山區 
 
 ### 查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率(sideproject_6)
-GET http://localhost:5000/A1_and_A2_years/mortality_rate/year/110/month/5/vehicle/C03/region/03中山區
+GET http://localhost:10000/A1_and_A2_years/mortality_rate/year/110/month/5/vehicle/C03/region/03中山區
 
 ### 查詢_特定年度_特定車種__特定地區_發生事故_死亡率(sideproject_7)
-GET http://localhost:5000/A1_and_A2_years/mortality_rate/year/112/vehicle/H01/region/03中山區
+GET http://localhost:10000/A1_and_A2_years/mortality_rate/year/112/vehicle/H01/region/03中山區
