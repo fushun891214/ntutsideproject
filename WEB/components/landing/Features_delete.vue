@@ -7,11 +7,15 @@ const idToDelete = ref('');
 
 // API返回的結果變量
 const apiResponse = ref(null);
+const runtimeConfig = useRuntimeConfig()
+
+// API_SERVER位址
+const apiServer = runtimeConfig.public.apiServerIp;
 
 // 發送API請求並處理響應的函數
 async function deleteData() {
   try {
-    const response = await axios.delete(`http://localhost:10000/A1_and_A2_years/delete/id/${idToDelete.value}`);
+    const response = await axios.delete(`${apiServer}/A1_and_A2_years/delete/id/${idToDelete.value}`);
     console.log('API Response:', response.data); // 檢查 API 回應
     apiResponse.value = response.data;
   } catch (error) {

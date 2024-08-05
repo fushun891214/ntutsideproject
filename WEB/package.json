@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "nuxt start"  
+    "start": "nuxt start"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@chenfengyuan/vue-carousel": "^2.0.0",
     "@iconify/vue": "^4.1.2",
+    "@nuxtjs/dotenv": "^1.4.2",
     "axios": "^1.7.2"
   }
 }

@@ -4,6 +4,11 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 // 定義並導出 Nuxt 配置
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiServerIp: process.env.API_SERVER_IP
+    }
+  },
   // 構建配置
   build: {
     // 指定需要轉譯的依賴

@@ -4,14 +4,17 @@ import axios from 'axios';
 
 // 選擇的事件類型變量
 const selectedEvent = ref(''); // 預設選擇查詢_特定ID_資料
+
 // 控制是否禁用選擇框的變量
 const isDisabledYear = ref(true);
 const isDisabledMonth = ref(true);
 const isDisabledRegion = ref(true);
 const isDisabledVehicle = ref(true);
 const isDisabledID = ref(false); // 新增變量來控制ID文字方塊的禁用狀態
+
 // API返回的數據變量
 const apiResponse = ref([]);
+const runtimeConfig = useRuntimeConfig()
 const mortalityRateResponse = ref(null); // 新增變數來存儲特定API的結果
 
 // 發生年度、月和車種選擇的變量
@@ -20,6 +23,9 @@ const selectedMonth = ref('');
 const selectedRegion = ref('');
 const selectedVehicle = ref('');
 const id = ref(''); // 新增變量來存儲使用者輸入的ID
+
+// API_SERVER位址
+const apiServer = runtimeConfig.public.apiServerIp;
 
 function updateDisabledState() {
   // 清空先前的查詢結果
@@ -67,35 +73,35 @@ async function fetchApiData() {
   console.log('fetchApiData function called'); // 確認函數被調用
   let apiUrl = '';
   mortalityRateResponse.value = null; // 重置變數
-  
+
   if (selectedEvent.value === '查詢_特定ID_資料') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/detailed/id/${id.value}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/detailed/id/${id.value}`;
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_1') {
-    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_1';
+    apiUrl = `${apiServer}/A1_and_A2_years/aggregate_1`;
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_2') {
-    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_2';
+    apiUrl = `${apiServer}/A1_and_A2_years/aggregate_2`;
   } else if (selectedEvent.value === '聚合_112年_特定區域_資料_聚合練習_3') {
-    apiUrl = 'http://localhost:10000/A1_and_A2_years/aggregate_3';
+    apiUrl = `${apiServer}/A1_and_A2_years/aggregate_3`;
   } else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_總受傷人數+總死亡人數') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_特定月份_總受傷人數+總死亡人數') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/sum/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}/month/${selectedMonth.value}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定地區_平均_每個月_受傷人數+死亡人數') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/avg/year/${selectedYear.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_地區_月份') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}`;
   }
   else if (selectedEvent.value === '查詢_排序_特定年度_特定車種_發生事故_特定地區') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/sum/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_特定年度_特定車種_發生事故_特定地區_特定月份_死亡率') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/month/${selectedMonth.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
   else if (selectedEvent.value === '查詢_特定年度_特定車種__特定地區_發生事故_死亡率') {
-    apiUrl = `http://localhost:10000/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
+    apiUrl = `${apiServer}/A1_and_A2_years/mortality_rate/year/${selectedYear.value}/vehicle/${selectedVehicle.value}/region/${decodeURIComponent(selectedRegion.value)}`;
   }
 
   if (apiUrl) {

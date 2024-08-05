@@ -1,7 +1,7 @@
 
 import type { CustomAppConfig } from 'nuxt/schema'
 import type { Defu } from 'defu'
-import cfg0 from "/Users/fushun/Desktop/ntutsideproject/WEB/app.config"
+import cfg0 from "/Users/fushun/Desktop/北科電子甲/碩0/ntutsideproject/WEB/app.config"
 
 declare const inlineConfig = {
   "nuxt": {

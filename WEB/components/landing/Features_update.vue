@@ -14,11 +14,15 @@ const vehicleType = ref('');
 
 // API返回的結果變量
 const apiResponse = ref(null);
+const runtimeConfig = useRuntimeConfig()
+
+// API_SERVER位址
+const apiServer = runtimeConfig.public.apiServerIp;
 
 // 發送API請求並處理響應的函數
 async function updateData() {
   try {
-    const response = await axios.put(`http://localhost:10000/A1_and_A2_years/update/id/${id.value}`, {
+    const response = await axios.put(`${apiServer}/A1_and_A2_years/update/id/${id.value}`, {
       發生年度: year.value,
       發生月: month.value,
       區序: region.value,

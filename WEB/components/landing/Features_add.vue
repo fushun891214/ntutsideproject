@@ -13,11 +13,17 @@ const vehicleType = ref('');
 
 // API返回的結果變量
 const apiResponse = ref(null);
+const runtimeConfig = useRuntimeConfig()
+
+// API_SERVER位址
+const apiServer = runtimeConfig.public.apiServerIp;
 
 // 發送API請求並處理響應的函數
 async function addData() {
+  console.log(process.env);
+  console.log(apiServer);
   try {
-    const response = await axios.post('http://localhost:10000/A1_and_A2_years/add', {
+    const response = await axios.post(`${apiServer}/A1_and_A2_years/add`, {
       發生年度: year.value,
       發生月: month.value,
       區序: region.value,
